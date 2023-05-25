@@ -1,7 +1,7 @@
 <?php 
 include 'template/header.php';
 ?>
-<body>
+
     
 <?php 
     $idProduct1 = "Teeshirt fatal Dev" ;
@@ -11,8 +11,8 @@ include 'template/header.php';
     print "$product1Price ";
     print  " $idProduct1";
 ?>
+    
 
-</body>
 <?php 
 include 'template/footer.php';
 ?>

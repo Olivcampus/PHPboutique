@@ -1,3 +1,4 @@
+</body>
 <footer>
     <?php
         $logoEntreprise = "/assets/images/logo_entreprise.png" ;

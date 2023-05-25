@@ -3,10 +3,10 @@ include 'template/header.php';
 ?>
 
 <?php 
-$catalogue = ["teeshirt","tapissouris", "poster" ];
+$catalogue = array('teeshirt','tapissouris', 'poster');
 asort($catalogue);
-echo '$catalogue[0]';
-echo '$catalogue[2]';
+echo $catalogue [0] ;
+echo $catalogue [2] ;
 ?>
 
 <?php 

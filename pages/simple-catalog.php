@@ -1,14 +1,8 @@
 <?php 
-include 'template/header.php';
-?>
-
-<?php 
 $catalogue = array('teeshirt','tapissouris', 'poster');
 asort($catalogue);
-echo $catalogue [0] ;
-echo $catalogue [2] ;
-?>
+foreach ($catalogue as $value){
+    echo $value. "<br>" ;
 
-<?php 
-include 'template/footer.php';
+}
 ?>

@@ -1,4 +1,4 @@
-<?php 
+<?php
 include 'template/header.php';
 ?>
 
@@ -29,8 +29,15 @@ include 'template/header.php';
             "picture_url"=> "<img src= /assets/images/tapis-souris.jpg>",
         ),
     ];
-
+$i =0;
+$j =0; 
+    do {
+        $products[$i][$j];
+        echo  $products ."<br>";
+    }
+    while ($products <=2);
 ?>
+
 
 <div>
     <h3><?php echo $products["teeshirt"] ["name"]?> </h3>

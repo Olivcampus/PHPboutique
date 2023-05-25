@@ -8,7 +8,8 @@
 </head>
 <body>
 
-<?php echo "Ceci est du texte"; ?>
+
+
 
 <p>Aujourd'hui nous sommes le <?php echo date('d/m/Y h:i:s'); ?>.</p>
 <?php 
@@ -23,7 +24,7 @@ $isAuthor = true;
 $isAdministrator = false;
 echo 'Bonjour ' . $fullname . ' et bienvenue sur le site !'; // méthode d'affichage la plus utilisé car "lisible"//
 $number = 10;
-$result = ($number + 5) * $number; // $result prend la valeur 150
+$result = ($number + 5) * $number; // $result prend la valeur 150 //
 $isEnabled = true;
 if ($isEnabled == true) {
     echo "Vous êtes autorisé(e) à accéder au site ✅";
@@ -32,5 +33,7 @@ else {
     echo "Accès refusé ❌ ";
 }
 ?>
+
 </body>
+ 
 </html>

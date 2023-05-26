@@ -1,10 +1,10 @@
 <?php
 
-function formatprice(price){
-    price = price /100;
-    echo "price " ." € " ."<br>"; 
-    return price;
-}
-
+function formatprice($valeur){
+    $valeur = $valeur / 100;  
+    $prix = sprintf("%.2f", $valeur);  
+    echo  'prix : '. $prix. ' € '. '<br>';
+   
+   }
 
 ?>

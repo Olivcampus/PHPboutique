@@ -1,7 +1,7 @@
 <footer class="bg-dark d-flex flex-md-row flex-sm-column justify-content-around align-items-center py-3 my-4">
       <div class="col-md-4 d-flex flex-column flex-md-row align-items-center">
         <div>
-          <a href="/index.html"class="mb-3 me-2 mb-md-0 text-muted text-decoration-none lh-1 d-flex justify-content-center ">
+          <a href="#"class="mb-3 me-2 mb-md-0 text-muted text-decoration-none lh-1 d-flex justify-content-center ">
             <img src="/assets/images/logo_entreprise.png" alt="logo_fatal_dev" class="logo_fatal_dev_footer">
             <p class="text-white mx-2 mb-md-0 d-flex align-items-center">FATAL.DEV</p>
           </a>

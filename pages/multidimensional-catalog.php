@@ -35,9 +35,11 @@ $products = [
 
 foreach ($products as $value => $product) {
     echo 'product : ' . $value . '<br>';
-    foreach ($product as $infos => $valeur) {
-        echo $infos . ': ' . $valeur . '<br>';
-         
+    foreach ($product as $infos => $valeur) {        
+        if ($infos == "price") {
+            echo formatprice($valeur);
+        }else { 
+            echo $infos . ' : ' . $valeur . '<br>';}
     }
 };
 

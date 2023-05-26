@@ -50,7 +50,7 @@
 
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="actifMenu nav-link text-white" href="/pages/entreprise/team.html" title="Accueil">L'équipe</a>
+            <a class="actifMenu nav-link text-white" href="/pages/multidimensional-catalog.php" title="Accueil">Accueil</a>
           </li>
         </ul>
 

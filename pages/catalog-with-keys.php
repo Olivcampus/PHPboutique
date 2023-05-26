@@ -3,6 +3,9 @@ include 'template/header.php';
 ?>
     
 <?php 
+
+include 'template/my-functions.php';
+
     $teeshirt = array(
         "name" => "Teeshirt fatal Dev",
         "price"=> 1990,
@@ -24,14 +27,14 @@ include 'template/header.php';
         "name" => "tapis souris fatal Dev",
         "price"=>2990,
         "weight"=>"250",
-        "discount"=>NULL,
+        "discount"=>"10%",
         "picture_url"=> "<img src= /assets/images/tapis-souris.jpg>",
     );
 
 ?>
    <div>
     <h3><?php echo $teeshirt ["name"]?> </h3>
-    <p><?php echo $teeshirt ["price"]?></p>
+    <p><?php echo formatprice($teeshirt["price"])?></p>
     <p><?php echo $teeshirt ["weight"]?></p>
     <p><?php echo $teeshirt ["discount"]?></p>
     <p><?php echo $teeshirt ["picture_url"]?></p>
@@ -39,7 +42,7 @@ include 'template/header.php';
 
    <div>
     <h3><?php echo $poster ["name"]?> </h3>
-    <p><?php echo $poster ["price"]?></p>
+    <p><?php echo formatprice($poster["price"])?></p>
     <p><?php echo $poster ["weight"]?></p>
     <p><?php echo $poster ["discount"]?></p>
     <p><?php echo $poster ["picture_url"]?></p>
@@ -47,7 +50,7 @@ include 'template/header.php';
 
    <div>
     <h3><?php echo $tapisSouris ["name"]?> </h3>
-    <p><?php echo $tapisSouris ["price"]?></p>
+    <p><?php echo formatprice($tapisSouris["price"])?></p>
     <p><?php echo $tapisSouris ["weight"]?></p>
     <p><?php echo $tapisSouris ["discount"]?></p>
     <p><?php echo $tapisSouris ["picture_url"]?></p>

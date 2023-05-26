@@ -5,7 +5,7 @@ include 'template/header.php';
 <?php 
     $teeshirt = array(
         "name" => "Teeshirt fatal Dev",
-        "price"=>"19,90€",
+        "price"=> 1990,
         "weight"=>"150",
         "discount"=>NULL,
         "picture_url"=> "<img src= /assets/images/t-shirt-fatal.png>",
@@ -14,7 +14,7 @@ include 'template/header.php';
 
     $poster = array(
         "name" => "poster",
-        "price"=>"22,90€",
+        "price"=>2290,
         "weight"=>"120",
         "discount"=>NULL,
         "picture_url"=> "<img src= /assets/images/poster.jpg>",
@@ -22,7 +22,7 @@ include 'template/header.php';
 
     $tapisSouris = array(
         "name" => "tapis souris fatal Dev",
-        "price"=>"29,90€",
+        "price"=>2990,
         "weight"=>"250",
         "discount"=>NULL,
         "picture_url"=> "<img src= /assets/images/tapis-souris.jpg>",

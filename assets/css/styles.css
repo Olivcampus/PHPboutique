@@ -1,0 +1,86 @@
+:root{
+  --bs-primary: #0D6BA6;
+  --font-style: Ubuntu, sans-serif;
+
+}
+
+.masthead {
+    height: 100vh;
+    min-height: 500px;
+    background-image: url('/assets/img/img_banner.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.logo_fatal_dev_header{
+  width: 25%;
+}
+
+.logo_fatal_dev_footer{
+  width: 30%;
+}
+
+h1{
+  color: #0D6BA6;
+  font-style: oblique;
+  font-weight: 900;
+}
+
+h2{
+  font-size: 4rem;
+  font-weight: 900;
+}
+
+.timeline-with-icons {
+  position: relative;
+  list-style: none;
+}
+
+.timeline-with-icons .timeline-item {
+  position: relative;
+}
+
+.timeline-with-icons .timeline-item:after {
+  position: absolute;
+  display: block;
+  top: 0;
+}
+
+.timeline-with-icons .timeline-icon {
+  position: absolute;
+  left: -48px;
+  background-color: hsl(217, 88.2%, 90%);
+  
+  border-radius: 50%;
+  height: 31px;
+  width: 31px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+p{
+  font-weight: 600;
+}
+
+.divbutton{
+  color: var(--bs-primary);
+}
+
+.product{
+  width: 25rem;
+}
+
+.about__title__paragraphe {
+  font-size: 1.2rem;
+}
+
+.about__historique__paragraphe {
+  font-size: 1.2rem;
+}
+
+h5 {
+  font-size: 1.5rem;
+  color:#0D6BA6;
+}

@@ -27,7 +27,7 @@ $tapisSouris = array(
     "name" => "tapis souris fatal Dev",
     "price" => 2990,
     "weight" => "250",
-    "discount" => "10%",
+    "discount" => 10,
     "picture_url" => "<img src= /assets/images/tapis-souris.jpg>",
 );
 
@@ -55,7 +55,7 @@ $tapisSouris = array(
     <p><?php echo  'prix : ' . formatprice($tapisSouris["price"]) . ' € ' . '<br>' ?></p>
     <p><?php echo  'prixHT : ' . priceExcludingVAT($tapisSouris["price"]) . ' € ' . '<br>' ?></p>
     <p><?php echo $tapisSouris["weight"] ?></p>
-    <p><?php echo $tapisSouris["discount"] ?></p>
+    <p><?php echo " Promo " .$tapisSouris["discount"]. "%".'<br>'.'prix PROMO : '.discountedPrice($tapisSouris, $tapisSouris["discount"]). ' € '; ?></p>
     <p><?php echo $tapisSouris["picture_url"] ?></p>
 </div>
 

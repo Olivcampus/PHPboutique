@@ -4,9 +4,7 @@ include 'template/header.php';
 
 <?php
 
-    include 'template/my-functions.php';
-
-    $products = [
+        $products = [
         "teeshirt" => array(
             "name" => "Teeshirt fatal Dev",
             "price" => 1990,
@@ -28,19 +26,28 @@ include 'template/header.php';
             "name" => "tapis souris fatal Dev",
             "price" => 2990,
             "weight" => "250",
-            "discount" => "10%",
+            "discount" => 10,
             "picture_url" => "<img src= /assets/images/tapis-souris.jpg>",
         ),
     ];
 
+    include 'template/my-functions.php';
+
     foreach ($products as $value => $product) {
-        echo 'product : ' . $value . '<br>';
-        foreach ($product as $infos => $valeur) {        
-            if ($infos == "price") {
-                echo 'prix : '. formatprice($valeur) . ' € '. '<br>';
-                echo 'prixHT : '. priceExcludingVAT($valeur) . ' € '. '<br>';       
-            }else { 
-                echo $infos . ' : ' . $valeur . '<br>';}
+
+        foreach ($product as $infos => $valeur) {    
+
+            if ($infos == "price") {                
+                echo 'prixHT : '. priceExcludingVAT($valeur) . ' € '. '<br>'.'prix : '. formatprice($valeur) . ' € '. '<br>'; 
+            }
+
+            elseif ($infos =="discount"){ 
+                if ($valeur != NULL)   {              
+                echo 'PROMO : '. ($valeur) . ' % '. '<br>'.'prix PROMO : '.discountedPrice($product , $valeur). ' € '. '<br>';
+                }elseif ($valeur == NULL){}                
+            }
+            
+            else {echo  $valeur . '<br>';}
         }
     };
 

@@ -31,17 +31,18 @@ $products = [
 ];
 
 foreach ($products as $value => $product) {
-    echo 'product : ' .$value. '<br>';
+    echo 'product : ' . $value . '<br>';
     foreach ($product as $infos => $valeur) {
-        echo $infos. ': ' .$valeur. '<br>';
+        echo $infos . ': ' . $valeur . '<br>';
     }
-}
+};
+
 echo '<br><br>';
 ?>
 
-
-
-
+<?php
+include 'my-functions.php';
+?>
 
 <?php
 include 'template/footer.php';

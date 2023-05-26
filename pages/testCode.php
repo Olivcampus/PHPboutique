@@ -100,7 +100,43 @@ $laurene = ['Laurène Castor', 'laurene.castor@exemple.com', 'P4ssw0rD', 28];
 $users = [$mickael, $mathieu, $laurene];
 
 echo $users[1][1]; // "mathieu.nebra@exemple.com"
+
 ?>
+
+
+
+<?php
+//les fonctions //
+$makefoo = true;
+
+/* Impossible d'appeler foo() ici,
+   car cette fonction n'existe pas.
+   Mais nous pouvons utiliser bar() */
+
+bar();
+
+if ($makefoo) {
+  function foo()
+  {
+    echo "Je n'existe pas tant que le programme n'est pas passé ici.\n";
+  }
+}
+
+/* Maintenant, nous pouvons appeler foo()
+   car $makefoo est évalué à vrai */
+
+if ($makefoo) foo();
+
+function bar()
+{
+  echo "J'existe dès le début du programme.\n";
+}
+
+?>
+
+
+
+
 </body>
  
 </html>

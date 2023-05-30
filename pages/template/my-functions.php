@@ -16,5 +16,4 @@
         $promo = $product ["price"]- $promo;
         return  formatprice($promo);
     }
-
 ?>

@@ -36,14 +36,14 @@ include 'template/header.php';
     foreach ($products as $value => $product) {
 
         foreach ($product as $infos => $valeur) {    
-
+            
             if ($infos == "price") {                
                 echo 'prixHT : '. priceExcludingVAT($valeur) . ' € '. '<br>'.'prix : '. formatprice($valeur) . ' € '. '<br>'; 
             }
 
             elseif ($infos =="discount"){ 
                 if ($valeur != NULL)   {              
-                echo 'PROMO : '. ($valeur) . ' % '. '<br>'.'prix PROMO : '.discountedPrice($product , $valeur). ' € '. '<br>';
+                echo 'PROMO : '. $valeur. ' % '. '<br>'.'prix PROMO : '.discountedPrice($product , $valeur). ' € '. '<br>';
                 }elseif ($valeur == NULL){}                
             }
             

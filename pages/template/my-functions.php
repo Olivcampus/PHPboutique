@@ -11,9 +11,14 @@
         return  formatprice($valeur);
     }
 
-    function discountedPrice($product , $valeur){     
+    function discountedPrice($product , $valeur){    
+        if ($valeur != null){ 
         $promo = $product ["price"]* ($valeur/100)  ;
         $promo = $product ["price"]- $promo;
-        return  formatprice($promo);
+        echo "PROMO ",$valeur, "% ","<br>", formatprice($promo), " € TTC", "<br>" , "au lieu de : ";
+    }else if ($valeur == null){
+        $paspromo = "pas de promotion en cours";
+        echo $paspromo;          
+    }
     }
 ?>

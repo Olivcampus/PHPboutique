@@ -68,19 +68,8 @@ p{
   color: var(--bs-primary);
 }
 
-.product{
-  width: 25rem;
-}
-
-.about__title__paragraphe {
-  font-size: 1.2rem;
-}
-
-.about__historique__paragraphe {
-  font-size: 1.2rem;
-}
-
 h5 {
   font-size: 1.5rem;
   color:#0D6BA6;
 }
+

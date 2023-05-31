@@ -21,4 +21,9 @@
         echo $paspromo;          
     }
     }
+
+    function calculPrice($product, $valeur){
+        $totalPrice = $valeur *  $product ["price"];
+        return $totalPrice;        
+    }
 ?>

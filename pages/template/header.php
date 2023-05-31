@@ -10,13 +10,13 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <link href="/assets/bootstrap-5.3.0-alpha3-dist/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+  <link href="../assets/bootstrap-5.3.0-alpha3-dist/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 
-  <link href="/assets/fontawesome/css/all.css" rel="stylesheet" type="text/css">
+  <link href="../assets/fontawesome/css/all.css" rel="stylesheet" type="text/css">
 
-  <link href="/assets/css/styles.css" rel="stylesheet" type="text/css">
+  <link href="../assets/css/styles.css" rel="stylesheet" type="text/css">
 
-  <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/logo_entreprise.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/logo_entreprise.png">
   
   <title>Accueil Fatal.dev</title>
 
@@ -29,8 +29,8 @@
 
     <div class="container d-flex flex-wrap">
 
-      <a class="navbar-brand d-flex align-items-center" href="/" title="accueil">
-        <img src="/assets/images/logo_entreprise.png" alt="logo" class="logo_fatal_dev_header">
+      <a class="navbar-brand d-flex align-items-center" href="multidimensional-catalog.php" title="accueil">
+        <img src="../assets/images/logo_entreprise.png" alt="logo" class="logo_fatal_dev_header">
       </a>
 
       <button class="navbar-toggler bg-dark" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -50,7 +50,7 @@
 
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="actifMenu nav-link text-white" href="/pages/multidimensional-catalog.php" title="Accueil">Accueil</a>
+            <a class="actifMenu nav-link text-white" href="../pages/multidimensional-catalog.php" title="Accueil">Accueil</a>
           </li>
         </ul>
 

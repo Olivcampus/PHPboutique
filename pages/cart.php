@@ -34,16 +34,16 @@ if (isset($_POST)) {
                                                 <i class="fas fa-minus"></i>
                                             </button>
 
-                                            <input id="form1" min="0" name="quantity" value=<?php echo $_POST['cart_quantity'] ?> type="number" class="form-control form-control-sm" />
+                                            <input id="form1" min="0" name="cart_quantity" value=<?php echo $_POST['cart_quantity'] ?> type="number" class="form-control form-control-sm" />
 
                                             <button class="btn btn-link px-2" onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
                                                 <i class="fas fa-plus"></i>
                                             </button>
                                         </div>
                                         <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
-                                            <h6 class="mb-0"><?php echo formatprice ($_POST['product_price']), " € TTC" ?></h6>
-                                            <?php $pTotal=$_POST['product_price'] * $_POST['cart_quantity']?>
-                                            <h6 class="mb-0"><?php echo "Prix total : ", formatprice ($pTotal), " € TTC" ?></h6>
+                                            
+                                            <?php $pTotal=calculPrice ($_POST['product_price'],$_POST['product_price_discount'],$_POST['cart_quantity']) ?>
+                                            <h6 class="mb-0"><?php echo "Prix total : ",formatprice ( $pTotal ), " € " ?></h6>
                                         </div>
                                         <div class="col-md-1 col-lg-1 col-xl-1 text-end">
                                             <a href="#!" class="text-muted"><i class="fas fa-times"></i></a>
@@ -60,11 +60,23 @@ if (isset($_POST)) {
                             <div class="col-lg-4 bg-grey">
                                 <div class="p-5">
                                     <h3 class="fw-bold mb-5 mt-2 pt-1 text-dark">résumé</h3>
+
+                                    <div class="d-flex justify-content-between mb-4">
+                                        <h5 class="text-uppercase text-dark">Prix HT</h5>
+                                        <h5><?php echo $_POST['product_price_HT'] * $_POST['cart_quantity'] , " €" ?></h5>
+                                    </div>
+
+                                    <div class="d-flex justify-content-between mb-4">
+                                        <h5 class="text-uppercase text-dark">TVA</h5>
+                                        <h5><?php echo (calculTVA ( formatprice ($_POST['product_price']),$_POST['product_price_HT'] )) * $_POST['cart_quantity']   , " €"?></h5>
+                                    
+                                    </div>
+
                                     <hr class="my-4">
 
                                     <div class="d-flex justify-content-between mb-4">
                                         <h5 class="text-uppercase text-dark">Prix avant livraison</h5>
-                                        <h5><?php echo formatprice ($pTotal), "€" ?></h5>
+                                        <h5><?php echo formatprice ( $pTotal ), "€" ?></h5>
                                     </div>
 
                                     <h5 class="text-uppercase mb-3 text-dark">Frais de port</h5>
@@ -80,10 +92,10 @@ if (isset($_POST)) {
 
                                     <div class="d-flex justify-content-between mb-5">
                                         <h5 class="text-uppercase text-dark">Prix total</h5>
-                                        <h5><?php echo formatprice ($pTotal), " €" ?></h5>
+                                        <h5><?php echo formatprice ( $pTotal ) , " €" ?></h5>
                                     </div>
 
-                                    <button type="button" class="btn btn-dark btn-block btn-lg" data-mdb-ripple-color="dark">Register</button>
+                                    <button type="button" class="btn btn-dark btn-block btn-lg" data-mdb-ripple-color="dark">Commander</button>
 
                                 </div>
                             </div>

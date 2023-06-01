@@ -11,19 +11,35 @@
         return  formatprice($valeur);
     }
 
-    function discountedPrice($product , $valeur){    
+    function discountedPrice($product , $valeur){   
+
         if ($valeur != null){ 
-        $promo = $product ["price"]* ($valeur/100)  ;
-        $promo = $product ["price"]- $promo;
-        echo "PROMO ",$valeur, "% ","<br>", formatprice($promo), " € TTC", "<br>" , "au lieu de : ";
-    }else if ($valeur == null){
-        $paspromo = "pas de promotion en cours";
-        echo $paspromo;          
+        $promo = $product ["price"] - ($product ["price"]* ($valeur/100) ) ;            
+        return $promo ;
+        
+    }else{
+        $promo=NULL;
+        return $promo;        
     }
     }
 
-    function calculPrice($product, $valeur){
-        $totalPrice = $valeur *  $product ["price"];
-        return $totalPrice;        
+    function calculPrice($product, $discount, $valeur){
+        if($discount != NULL){
+            echo formatprice ($product), " € ", " prix avant remise", "<br>";
+            echo formatprice($discount), " € ", " prix après remise" ;
+           $totalPrice = $discount*$valeur;          
+           return $totalPrice; 
+        }
+        else{
+            echo formatprice ($product), " € " ;
+            $totalPrice = $valeur *  $product;
+            return $totalPrice;      
+        }  
+    }
+
+    function calculTVA ($product, $productHT){
+            $tva = $product-  $productHT;
+            return $tva;
+
     }
 ?>

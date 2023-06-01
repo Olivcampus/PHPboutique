@@ -2,7 +2,7 @@
 include 'template/header.php';
 ?>
 <?php
-
+print_r($_SESSION);
 $products = [
     "teeshirt" => array(
         "name" => "Teeshirt fatal Dev",
@@ -77,14 +77,15 @@ include 'template/my-functions.php';
                                     <div class="d-flex flex-column mt-4">
                                         <form method="post" action="cart.php">
                                             <div class="block quantity">
-                                                <input type="number" class="form-control" id="cart_quantity" value="1" min="0" max="5" name="cart_quantity">
-                                                <input type="hidden" id="product_price" value="<?php echo $product['price'] ?>"  name="product_price">
-                                                <input type="hidden" id="product_price_HT" value="<?php echo priceExcludingVAT($product['price'])?>"  name="product_price_HT">
-                                                <input type="hidden" id="product_price_discount" value="<?php echo discountedPrice($product, $product['discount'])?>"  name="product_price_discount">
-                                                <input type="hidden" id="product_picture" value="<?php echo $product['picture_url'] ?>"  name="product_picture">
-                                                <input type="hidden" id="product_weight" value="<?php echo $product['weight'] ?>"  name="product_weight">
-                                            </div>
-                                            <input type="hidden" id="name_product" value="<?php echo $product['name'] ?>" name="name_product">
+                                                <input type="number" class="form-control" id="cart_quantity" value= "1" min="1" name="cart_quantity">
+                                                <input type="hidden" id="cart_quantitysession" value="<?php echo $_SESSION ['qte']  = 'cart_quantity'?> "  name="cart_quantitysession">                                                
+                                                <input type="hidden" id="product_price" value="<?php echo $_SESSION['price']= $product['price'] ?>"  name="product_price">
+                                                <input type="hidden" id="product_price_HT" value="<?php echo  $_SESSION['priceHT']= priceExcludingVAT($product['price'])?>"  name="product_price_HT">
+                                                <input type="hidden" id="product_price_discount" value="<?php echo $_SESSION['priceDiscount']= discountedPrice($product, $product['discount'])?>"  name="product_price_discount">
+                                                <input type="hidden" id="product_picture" value="<?php echo $_SESSION['picture']= $product['picture_url'] ?>"  name="product_picture">
+                                                <input type="hidden" id="product_weight" value="<?php echo $_SESSION['weight']= $product['weight'] ?>"  name="product_weight">
+                                                <input type="hidden" id="name_product" value="<?php echo $_SESSION['name']= $product['name'] ?>" name="name_product">
+                                            </div>                                            
                                             <button class="btn btn-outline-primary btn-sm mt-2" type="submit" name="addProduct" value="addProduct">
                                                 Ajouter au panier
                                             </button>

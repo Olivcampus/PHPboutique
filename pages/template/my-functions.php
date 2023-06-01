@@ -42,4 +42,19 @@
             return $tva;
 
     }
-?>
+
+    function calculFraisDP ($poids, $qte, $prix){
+        $poids = $poids * $qte ;
+        if ($poids < 500) {
+            $fraisPort= 500;
+            return $fraisPort;
+        }
+        else if ($poids < 2000){
+            $fraisPort = 0.1 * $prix;
+            return $fraisPort;
+        }else {
+            $fraisPort = 0;
+            return $fraisPort;
+        }
+
+    }

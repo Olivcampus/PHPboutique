@@ -15,14 +15,22 @@
   <link href="../assets/fontawesome/css/all.css" rel="stylesheet" type="text/css">
 
   <link href="../assets/css/styles.css" rel="stylesheet" type="text/css">
+  
+  
 
   <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/logo_entreprise.png">
   
-  <title>Accueil Fatal.dev</title>
+  <title>Fatal.dev</title>
 
 </head>
 
 <body>
+
+<?php  
+if (session_status() !== PHP_SESSION_ACTIVE) {
+    session_start();
+}
+?>
 
   <!-- Navbar  -->
   <nav class="navbar navbar-expand-lg bg-dark p-md-3 d-flex flex-column">

@@ -1,7 +1,7 @@
 <?php
 
     function formatprice($valeur){
-        $valeur = $valeur / 100;  
+        $valeur = (int) $valeur / 100;  
         $valeur = sprintf("%.2f", $valeur);  
         return  $valeur;
     }
@@ -43,18 +43,15 @@
 
     }
 
-    function calculFraisDP ($poids, $qte, $prix){
+    function calculFraisDP ($poids, $qte, $prix, $transporteur){
         $poids = $poids * $qte ;
         if ($poids < 500) {
-            $fraisPort= 500;
-            return $fraisPort;
+            $fraisPort= 500 + (int)$transporteur;        
         }
         else if ($poids < 2000){
-            $fraisPort = 0.1 * $prix;
-            return $fraisPort;
+            $fraisPort = 0.1 * $prix + (int)$transporteur; 
         }else {
-            $fraisPort = 0;
-            return $fraisPort;
+            $fraisPort = 0 + (int)$transporteur;
         }
-
+        return $fraisPort;
     }

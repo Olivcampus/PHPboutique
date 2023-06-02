@@ -2,8 +2,17 @@
 include 'template/header.php';
 include 'template/my-functions.php';
 include 'template/item.php';
-print_r($_SESSION)
+
+$transporteur = [
+    "0" => 0,
+    "tnt" => 500,
+    "LaPoste" => 1000,
+    "DPD" => 750,
+    "Chronopost" => 1500,
+    "relaisColis" => 0,
+]
 ?>
+<form method="post" action="cart.php">
 <section class="h-100 h-custom" style="background-color: #000;">
     <div class="container py-5 h-100">
         <div class="row d-flex justify-content-center align-items-center h-100">
@@ -19,18 +28,17 @@ print_r($_SESSION)
 
                                     <div class="row mb-4 d-flex justify-content-between align-items-center">
                                         <div class="col-md-2 col-lg-2 col-xl-2">
-                                            <img src="<?php echo $_SESSION['picture'] ?> " class="img-fluid rounded-3" alt="Cotton T-shirt">
+                                            <img src="<?php echo $_SESSION['product_picture'] ?> " class="img-fluid rounded-3" alt="Cotton T-shirt">
                                         </div>
                                         <div class="col-md-3 col-lg-3 col-xl-3">
-                                            <h6 class="text-muted"><?php echo $_SESSION['name'] ?></h6>
-                                            <h6 class="text-black mb-0"><?php echo "description" ?></h6>
+                                            <h6 class="text-muted"><?php echo $_SESSION['name_product'] ?></h6>                                            
                                         </div>
                                         <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
                                             <button class="btn btn-link px-2" onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
                                                 <i class="fas fa-minus"></i>
                                             </button>
 
-                                            <input id="form1" min="0" name="cart_quantity" value=<?php echo $_SESSION['qte'] ?> type="number" class="form-control form-control-sm" />
+                                            <input id="form1" min="0" name="cart_quantity" value=<?php echo $_POST['cart_quantity'] ?> type="number" class="form-control form-control-sm" />
 
                                             <button class="btn btn-link px-2" onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
                                                 <i class="fas fa-plus"></i>
@@ -38,7 +46,7 @@ print_r($_SESSION)
                                         </div>
                                         <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
 
-                                            <?php $pTotal = calculPrice ($_SESSION['price'], $_SESSION['priceDiscount'], $_SESSION['qte']) ?>
+                                            <?php $pTotal = calculPrice($_SESSION['product_price'], $_SESSION['product_price_discount'], $_POST['cart_quantity']) ?>
                                             <h6 class="mb-0"><?php echo "Prix total : ", formatprice($pTotal), " € " ?></h6>
                                         </div>
                                         <div class="col-md-1 col-lg-1 col-xl-1 text-end">
@@ -59,12 +67,12 @@ print_r($_SESSION)
 
                                     <div class="d-flex justify-content-between mb-4">
                                         <h5 class="text-uppercase text-dark">Prix HT</h5>
-                                        <h5><?php echo $_SESSION['priceHT'] * $_SESSION['qte'], " €" ?></h5>
+                                        <h5><?php echo $_SESSION['product_price_HT'] * $_POST['cart_quantity'], " €" ?></h5>
                                     </div>
 
                                     <div class="d-flex justify-content-between mb-4">
                                         <h5 class="text-uppercase text-dark">TVA</h5>
-                                        <h5><?php echo (calculTVA(formatprice($_SESSION['price']), $_SESSION['priceHT'])) * $_SESSION['qte'], " €" ?></h5>
+                                        <h5><?php echo (calculTVA(formatprice($_SESSION['product_price']), $_SESSION['product_price_HT'])) * $_POST['cart_quantity'], " €" ?></h5>
 
                                     </div>
 
@@ -73,25 +81,27 @@ print_r($_SESSION)
                                     <div class="d-flex justify-content-between mb-4">
                                         <h5 class="text-uppercase text-dark">Total panier </h5>
                                         <h5><?php echo  formatprice($pTotal), "€" ?></h5>
-                                    </div>
-                                    <form method="post" action="cart.php">
+                                    </div>                                    
                                         <div class="mb-4 pb-2">
-                                            <select class="select" name="transporteur">
-                                                <option value="<?php $transporteur['tnt'] ?> ">TNT 5€</option>                                                
-                                                <option value="<?php $transporteur['LaPoste'] ?>">La Poste 10€</option>                                                
-                                                <option value="<?php $transporteur['DPD'] ?>">DPD 7,50€</option>                                                
-                                                <option value="<?php $transporteur['Chronopost'] ?>">Chronopost 15€</option>
-                                                <option value="<?php $transporteur['relaisColis'] ?>">relais colis gratuit</option>
+                                            <select name="transporteur">
+                                                <?php if (isset ($_POST['transporteur'])){ ?>
+                                                    <option value="<?php $_POST['transporteur'] ?>" selected><?php echo formatprice($_POST['transporteur']), " €" ?></option>                                                                      
+                                                <?php }else{ ?>
+                                                    <option value=" <?php $_POST['transporteur'] = 0?>" selected>Sélectionner un transporteur</option>
+                                                <?php
+                                                 } 
+                                                foreach ($transporteur as $key => $data) {
+                                                    echo ' <option value="' . $data . '"> ' . $key . '  ' . formatprice ($data) . "€ ", ' </option>   ';                                                    
+                                                }
+                                           
+                                                ?>
                                             </select>
-                                            <input type="hidden" id="transporter_choice" value="<?php echo  $transporteur['tnt'] ?>" name="transporter_choice">
-                                            <button type="submit" class="btn btn-dark btn-block btn-lg" value="add_transporteur" data-mdb-ripple-color="dark" name = "add_transporteur" >Valider </button>
+                                            <button type="submit" class="btn btn-dark btn-block btn-lg" value="add_transporteur" data-mdb-ripple-color="dark" name="add_transporteur">Valider </button>
                                         </div>
 
-
-
                                         <div class="d-flex justify-content-between mb-4">
-                                            <h5 class="text-uppercase text-dark">Frais de port </h5>
-                                            <h5><?php echo formatprice($fraisPort =  calculFraisDP($_SESSION['weight'], $_SESSION['qte'], $pTotal)) ?> €</h5>
+                                            <h5 class="text-uppercase text-dark">Frais de port </h5>                                            
+                                            <h5><?php echo formatprice($fraisPort =  calculFraisDP($_SESSION['product_weight'], $_POST['cart_quantity'], $pTotal, $_POST['transporteur'])) ?> €</h5>
                                         </div>
                                         <div class="mb-4 pb-2">
 
@@ -115,6 +125,7 @@ print_r($_SESSION)
         </div>
 
     </div>
+    </form>
 </section>
 <script src="../assets/bootstrap-5.3.0-alpha3-dist/js/bootstrap.min.js"></script>
 <?php

@@ -1,3 +1,8 @@
+<?php  
+
+    session_start();
+
+?>
 <!DOCTYPE html>
 
 <html lang="fr">
@@ -26,11 +31,7 @@
 
 <body>
 
-<?php  
-if (session_status() !== PHP_SESSION_ACTIVE) {
-    session_start();
-}
-?>
+
 
   <!-- Navbar  -->
   <nav class="navbar navbar-expand-lg bg-dark p-md-3 d-flex flex-column">

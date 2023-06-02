@@ -74,8 +74,7 @@ include 'template/my-functions.php';
                                     <div class="d-flex flex-column mt-4">
                                         <form method="post" action="cart.php">
                                             <div class="block quantity">
-                                                <input type="number" class="form-control" id="cart_quantity" value="1" min="1" max="5" name="cart_quantity">   
-                                                                                                                                                                              
+                                                <input type="number" class="form-control" id="cart_quantity" value="1" min="1" max="5" name="cart_quantity">                                                                                                                                                                                 
                                                 <input type="hidden" id="product_price" value="<?php echo $_SESSION['product_price']= $product['price'] ?>"  name="product_price">
                                                 <input type="hidden" id="product_price_HT" value="<?php echo  $_SESSION['product_price_HT']= priceExcludingVAT($product['price'])?>"  name="product_price_HT">
                                                 <input type="hidden" id="product_price_discount" value="<?php echo $_SESSION['product_price_discount']= discountedPrice($product, $product['discount'])?>"  name="product_price_discount">
@@ -86,7 +85,6 @@ include 'template/my-functions.php';
                                             <button class="btn btn-outline-primary btn-sm mt-2" type="submit" name="addProduct" value="addProduct">
                                                 Ajouter au panier
                                             </button>
-
                                         </form>
                      
 

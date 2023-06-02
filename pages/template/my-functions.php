@@ -55,3 +55,10 @@
         }
         return $fraisPort;
     }
+
+    function emptyCart($destroy){
+
+        $destroy= session_unset();
+        return $destroy;
+
+    }

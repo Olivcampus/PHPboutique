@@ -1,6 +1,7 @@
 <?php  
-
     session_start();
+include_once "template/cartfunctions.php";
+    $cartCount = getCartItems();
 
 ?>
 <!DOCTYPE html>
@@ -60,6 +61,7 @@
         <ul class="navbar-nav">
           <li class="nav-item">
             <a class="actifMenu nav-link text-white" href="../pages/multidimensional-catalog.php" title="Accueil">Accueil</a>
+            <a href="cart.php">Mon Panier (<?php echo $cartCount ?> <i class="fa-solid fa-basket-shopping"></i>)</a>
           </li>
         </ul>
 

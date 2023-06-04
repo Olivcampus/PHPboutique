@@ -25,9 +25,10 @@
 
     function calculPrice($product, $discount, $valeur){
         if($discount != NULL){
+            $prixdiscount = $product - ($product * ($discount/100));
             echo formatprice ($product), " € ", " prix avant remise", "<br>";
-            echo formatprice($discount), " € ", " prix après remise" ;
-           $totalPrice = $discount*$valeur;          
+            echo formatprice($prixdiscount), " € ", " prix après remise" ;
+           $totalPrice = $prixdiscount*$valeur;          
            return $totalPrice; 
         }
         else{
@@ -43,8 +44,8 @@
 
     }
 
-    function calculFraisDP ($poids, $qte, $prix, $transporteur){
-        $poids = $poids * $qte ;
+    function calculFraisDP ($poids, $prix, $transporteur){
+       
         if ($poids < 500) {
             $fraisPort= 500 + (int)$transporteur;        
         }
@@ -54,11 +55,4 @@
             $fraisPort = 0 + (int)$transporteur;
         }
         return $fraisPort;
-    }
-
-    function emptyCart($destroy){
-
-        $destroy= session_unset();
-        return $destroy;
-
     }

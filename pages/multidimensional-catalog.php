@@ -51,7 +51,7 @@ $products = getProducts();
                                                     <input type="hidden" name="product" value="<?php echo $productKey ?>">
                                                     <input type="number" name="quantity" value="1" min="1" max="15">
                                                 </div>
-                                                <button class="btn btn-outline-primary btn-sm mt-2" type="submit" name="addProduct" value="addProduct">
+                                                <button class="btn btn-outline-primary btn-sm mt-2">
                                                     Ajouter au panier
                                                 </button>
                                             </form>

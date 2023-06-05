@@ -1,5 +1,5 @@
 <?php  
-    session_start();
+    
 include_once "template/cartfunctions.php";
     $cartCount = getCartItems();
 
@@ -61,7 +61,7 @@ include_once "template/cartfunctions.php";
         <ul class="navbar-nav">
           <li class="nav-item">
             <a class="actifMenu nav-link text-white" href="../pages/multidimensional-catalog.php" title="Accueil">Accueil</a>
-            <a href="cart.php">Mon Panier (<?php echo $cartCount ?> <i class="fa-solid fa-basket-shopping"></i>)</a>
+            <a href="cart.php" style="text-decoration: none " class=" text-white">Mon Panier (<?php echo $cartCount ?> <i class="fa-solid fa-basket-shopping "></i>)</a>
           </li>
         </ul>
 

@@ -4,7 +4,7 @@ include "../pages/template/catalog-with-keys.php";
 include '../pages/template/my-functions.php';
 
 function addToCart($productKey, $quantity) {    
-    $products = getProduct($productKey);    
+    $product = getProduct ($productKey);    
        // On initialise le tableau de session s'il n'existe pas encore
     if (! isset($_SESSION['cart'])) {
         $_SESSION['cart'] = [];
@@ -34,9 +34,9 @@ function getCart() {
             'price'     => $product['price'],
             'quantity'  => $quantity,
             'discount' => $product['discount'],
-            'total'     =>$product['price'] * $quantity,
+            'total'     => (int) $product['price'] * $quantity,
             'weight'    => $product['weight'],
-            'qteWeight' => $product['weight'] * $quantity,
+            'qteWeight' => (int) $product['weight'] * $quantity,
         ];
     }
 
@@ -46,15 +46,13 @@ function getCart() {
 
 function getCartTotal($cart) {
     $total = 0;
-    if ( $cart['discount'] == NULL){
     foreach($cart as $item) {
+    if ( $item['discount'] == NULL){    
         $total += $item['total'];
-    } } else {
-        foreach($cart as $item) {
+         } else {       
         $total += $item['total']- ($item['total']*($item['discount']/100));
-    }}
-
-
+    }
+}
     return $total;
 }
 

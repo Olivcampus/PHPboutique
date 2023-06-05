@@ -1,15 +1,16 @@
-<?php 
-
-include "../pages/template/catalog-with-keys.php";
+<?php
 include '../pages/template/my-functions.php';
+include '../pages/template/catalog-with-keys.php';
 
-function addToCart($productKey, $quantity) {    
-    $product = getProduct ($productKey);    
-       // On initialise le tableau de session s'il n'existe pas encore
-    if (! isset($_SESSION['cart'])) {
+
+function addToCart($productKey, $quantity)
+{
+
+    // On initialise le tableau de session s'il n'existe pas encore
+    if (!isset($_SESSION['cart'])) {
         $_SESSION['cart'] = [];
     }
-    
+
     // On ajoute (ou remplace) le produit au panier
     if (isset($_SESSION['cart'][$productKey])) {
         $_SESSION['cart'][$productKey] += $quantity;
@@ -18,15 +19,13 @@ function addToCart($productKey, $quantity) {
     }
 }
 
-function getCart() {
+function getCart()
+{
     $cartSession = $_SESSION['cart'] ?? [];
-
+    include '../pages/template/controller.php';
     $cart = [];
-
-    foreach($cartSession as $productKey => $quantity) {
-        
-        $product = getProduct($productKey);
-
+    $product = $bdd->query('SELECT * FROM product');    
+    foreach ($cartSession as $productKey => $quantity) {
         $cart[$productKey] = [
             'id'        => $productKey,
             'name'     => $product['name'],
@@ -41,54 +40,58 @@ function getCart() {
     }
 
     return $cart;
-
 }
 
-function getCartTotal($cart) {
+function getCartTotal($cart)
+{
     $total = 0;
-    foreach($cart as $item) {
-    if ( $item['discount'] == NULL){    
-        $total += $item['total'];
-         } else {       
-        $total += $item['total']- ($item['total']*($item['discount']/100));
+    foreach ($cart as $item) {
+        if ($item['discount'] == NULL) {
+            $total += $item['total'];
+        } else {
+            $total += $item['total'] - ($item['total'] * ($item['discount'] / 100));
+        }
     }
-}
     return $total;
 }
 
-function getCartItems() {
-    if ( ! isset($_SESSION['cart']) ) {
+function getCartItems()
+{
+    if (!isset($_SESSION['cart'])) {
         return 0;
     }
 
     return count($_SESSION['cart']);
 }
 
-function updateCart($productKeys, $quantities) {
-    for($i = 0; $i< count($productKeys); $i++) {
+function updateCart($productKeys, $quantities)
+{
+    for ($i = 0; $i < count($productKeys); $i++) {
 
         $productKey = $productKeys[$i];
         $quantity = $quantities[$i];
-        
+
         // On ajoute (ou remplace) le produit au panier
         $_SESSION['cart'][$productKey] = $quantity;
     }
 }
 
-function removeFromCart($productKey) {
+function removeFromCart($productKey)
+{
 
-    if(! isset($_SESSION['cart'][$productKey])) {
+    if (!isset($_SESSION['cart'][$productKey])) {
         return;
     }
 
     unset($_SESSION['cart'][$productKey]);
 }
 
-function WeightTotal ($cart){
+function WeightTotal($cart)
+{
     $totalWeight = 0;
 
-    foreach($cart as $item) {
-        $totalWeight += $item['qteWeight'] ;
+    foreach ($cart as $item) {
+        $totalWeight += $item['qteWeight'];
     }
 
     return $totalWeight;

@@ -4,7 +4,9 @@ include_once 'template/header.php';
 include_once 'template/my-functions.php';
 include_once 'template/cartfunctions.php';
 include_once 'template/alert.php';
- var_dump($_SESSION);
+
+
+
 if (isset($_POST['product']) && isset($_POST['quantity']) && isset($_POST['action'])) {
     $productKey = $_POST['product'];
     $quantity = $_POST['quantity'];
@@ -17,6 +19,7 @@ if (isset($_POST['product']) && isset($_POST['quantity']) && isset($_POST['actio
     if ($action === "update") {
         updateCart($productKey, $quantity);
     }
+    
 }
 
 if (isset($_GET['delete'])) {

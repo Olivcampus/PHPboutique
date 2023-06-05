@@ -1,6 +1,14 @@
 <?php  
-    
+include 'template/controller.php';
+  // $requete= $bdd ->query('SELECT * FROM product'); "requete BDD "
+  //   $i=0;
+  //   while($donnees = $requete -> fetch()){
+  //     echo $donnees ['name'];
+  // }
+
+
 include_once "template/cartfunctions.php";
+    
     $cartCount = getCartItems();
 
 ?>

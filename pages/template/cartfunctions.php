@@ -1,58 +1,73 @@
 <?php
 include '../pages/template/my-functions.php';
 include '../pages/template/catalog-with-keys.php';
+include 'template/requete.php';
 
 
-function addToCart($productKey, $quantity)
+function addToCart($productKey, $quantity, bool $add)
 {
+    
+    $product = [
+        'productId' => $productKey,
+        'quantity' => $quantity
+    ];
 
-    // On initialise le tableau de session s'il n'existe pas encore
-    if (!isset($_SESSION['cart'])) {
-        $_SESSION['cart'] = [];
-    }
-
-    // On ajoute (ou remplace) le produit au panier
-    if (isset($_SESSION['cart'][$productKey])) {
-        $_SESSION['cart'][$productKey] += $quantity;
+    $exist = false;
+    if(!isset($_SESSION['cart'][$productKey]))
+    {
+        $_SESSION['cart'][$productKey] = $product;
     } else {
-        $_SESSION['cart'][$productKey] = $quantity;
-    }
-}
+        foreach($_SESSION['cart'] as $key => $value)
+        {
+            if($productKey == $_SESSION['cart'][$key]['productId'])
+            {
+                if($add) { $_SESSION['cart'][$productKey]['quantity'] = $quantity; }
 
-function getCart()
-{
-    $cartSession = $_SESSION['cart'] ?? [];
-    include '../pages/template/controller.php';
-    $cart = [];
-    $product = $bdd->query('SELECT * FROM product');    
-    foreach ($cartSession as $productKey => $quantity) {
-        $cart[$productKey] = [
-            'id'        => $productKey,
-            'name'     => $product['name'],
-            'picture_url'     => $product['picture_url'],
-            'price'     => $product['price'],
-            'quantity'  => $quantity,
-            'discount' => $product['discount'],
-            'total'     => (int) $product['price'] * $quantity,
-            'weight'    => $product['weight'],
-            'qteWeight' => (int) $product['weight'] * $quantity,
-        ];
-    }
+                if(!$add) { $_SESSION['cart'][$productKey]['quantity'] += $quantity; }
 
-    return $cart;
-}
-
-function getCartTotal($cart)
-{
-    $total = 0;
-    foreach ($cart as $item) {
-        if ($item['discount'] == NULL) {
-            $total += $item['total'];
-        } else {
-            $total += $item['total'] - ($item['total'] * ($item['discount'] / 100));
+                $exist = true;
+            }
+            if(!$exist) $_SESSION['cart'][$productKey] = $product;
         }
     }
-    return $total;
+}
+
+function getCart($bdd)
+{
+    if(!empty($_SESSION['cart'] ))
+    {
+        $arrProductId = array_column($_SESSION['cart'],'productId');
+        foreach($arrProductId as $id) 
+        {
+            $idProduct = (int)$id;
+            $requete = $bdd->query("SELECT * FROM product WHERE id = ".$idProduct.""); 
+            $requete->execute();
+            $cart[] = $requete->fetch(PDO::FETCH_ASSOC);
+            $requete->closeCursor();
+        }
+        return $cart; 
+    }    
+    return false;
+}
+
+function getCartTotal($cart, $quantity)
+{   
+    if(!empty($_SESSION['cart'])) {
+        $total = 0;
+       
+
+        foreach ($cart as $item) {
+  
+            if ($item['discount'] == NULL) {         
+                $total += $item['price'] * $quantity;
+                
+            } else {
+                $total += ($item['total'] - ($item['total'] * ($item['discount'] / 100))) *$quantity;
+            }
+        }
+        return $total;
+    }
+    return false;
 }
 
 function getCartItems()
@@ -78,21 +93,24 @@ function updateCart($productKeys, $quantities)
 
 function removeFromCart($productKey)
 {
-
-    if (!isset($_SESSION['cart'][$productKey])) {
-        return;
+    foreach ($_SESSION['cart'] as $key => $value){
+        if ((int)$productKey === (int)$_SESSION['cart'][$key]['productId']) {
+            unset($_SESSION['cart'][$key]);
+        }
     }
-
-    unset($_SESSION['cart'][$productKey]);
 }
 
 function WeightTotal($cart)
 {
-    $totalWeight = 0;
+    if(!empty($_SESSION['cart']))
+    {
+        $totalWeight = 0;
 
-    foreach ($cart as $item) {
-        $totalWeight += $item['qteWeight'];
+        foreach ($cart as $item) {
+            $totalWeight += $item['weight'];
+        }
+    
+        return $totalWeight;
     }
-
-    return $totalWeight;
+    return false;
 }

@@ -1,5 +1,7 @@
 <?php  
-include 'template/controller.php';
+if (session_status() !== PHP_SESSION_ACTIVE) {
+  session_start();
+}
   // $requete= $bdd ->query('SELECT * FROM product'); "requete BDD "
   //   $i=0;
   //   while($donnees = $requete -> fetch()){

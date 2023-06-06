@@ -1,47 +1,42 @@
 <?php
-session_start();
 include_once 'template/header.php';
 include_once 'template/my-functions.php';
 include_once 'template/cartfunctions.php';
 include_once 'template/alert.php';
+// unset($_SESSION['cart']);
 
+if (!isset($_SESSION['cart'])) {
+    $_SESSION['cart'] = [];
+}
+if (isset($_POST['addproduct'])) {
+    addToCart($_POST['productId'], $_POST['quantity'],false);
 
-
-if (isset($_POST['product']) && isset($_POST['quantity']) && isset($_POST['action'])) {
-    $productKey = $_POST['product'];
-    $quantity = $_POST['quantity'];
-    $action = $_POST['action'];
-
-    if ($action === "add") {
-        addToCart($productKey, $quantity);
+    if ($_POST['name'] === "update") {
+        updateCart($_POST['productId'], $_POST['quantity']);
     }
+}
+if (isset($_POST['delete']) && isset($_POST['productId'])) { removeFromCart($_POST['productId']); }
 
-    if ($action === "update") {
-        updateCart($productKey, $quantity);
-    }
-    
+if (isset($_POST['quantity'])){ $_POST['quantity'] == "0" ? removeFromCart($_POST['productId']) : addToCart($_POST['productId'], $_POST['quantity'], true); }
+
+if (isset($_POST['modifQuantity'])) {
+    if (isset($_POST['lessQuantity'])) { $_POST['lessQuantity'] == "0" ? removeFromCart($_POST['productId']) : addToCart($_POST['productId'], $_POST['lessQuantity'], true); $_POST['quantity']=$_POST['lessQuantity'];}
+    if (isset($_POST['moreQuantity'])) { $_POST['moreQuantity'] == "0" ? removeFromCart($_POST['productId']) : addToCart($_POST['productId'], $_POST['moreQuantity'], true); $_POST['quantity']=$_POST['moreQuantity']; }
 }
 
-if (isset($_GET['delete'])) {
-    $productKey = $_GET['delete'];
-    removeFromCart($productKey);
-}
-
-$cart = getCart();
-
-$total = getCartTotal($cart);
-
-$totalWeight = WeightTotal ($cart);
+$modifQuantity = 1;
+$arrProduct = getCart($bdd);
+$total = getCartTotal($arrProduct,$_POST['quantity'],);
+$totalWeight = WeightTotal($arrProduct);
 
 ?>
 <?php if (isset($_GET['delete'])) : ?>
     <?php echo getAlert('Le produit <strong>' . $_GET['delete'] . '</strong> a été supprimé de votre panier.', 'error'); ?>
 <?php endif; ?>
-<?php if (empty($cart)) : ?>
+<?php if (empty($_SESSION['cart'])) : ?>
     <?php echo getAlert('Votre panier est vide.', 'success'); ?>
 <?php else : ?>
-    <form method="post" action="cart.php">
-        <input type="hidden" name="action" value="update">
+    
 
         <section class="h-100 h-custom" style="background-color: #000;">
             <div class="container py-5 h-100">
@@ -55,8 +50,8 @@ $totalWeight = WeightTotal ($cart);
                                             <div class="d-flex justify-content-between align-items-center mb-5">
                                                 <h1 class="fw-bold mb-0 text-black">Panier</h1>
                                             </div>
-                                            <?php foreach ($cart as $item) : ?>
-                                                <input type="hidden" name="product[]" value="<?php echo $item['id'] ?>">
+                                            <?php foreach ($arrProduct as $item) : ?>
+                                                <input type="hidden" name="productId" value="<?php echo $item['id'] ?>">
                                                 <div class="row mb-4 d-flex justify-content-between align-items-center">
                                                     <div class="col-md-2 col-lg-2 col-xl-2">
                                                         <img src="<?php echo $item['picture_url'] ?> " class="img-fluid rounded-3" alt="Cotton T-shirt">
@@ -65,23 +60,46 @@ $totalWeight = WeightTotal ($cart);
                                                         <h6 class="text-muted"><?php echo $item['name'] ?></h6>
                                                     </div>
                                                     <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
-                                                        <button class="btn btn-link px-2" onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
-                                                            <i class="fas fa-minus"></i>
-                                                        </button>
-                                                        <input id="form1" min="0" name="quantity[]" value="<?php echo $item['quantity'] ?>" type="number" class="form-control form-control-sm" />
-                                                        <button class="btn btn-link px-2" onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
-                                                            <i class="fas fa-plus"></i>
-                                                        </button>
+                                                    <?php 
+                                                        if(!empty($_SESSION['cart'])) 
+                                                        {
+                                                            foreach($_SESSION['cart'] as $product) 
+                                                            {
+                                                                $quantity = $product['quantity'];
+                                                            }
+                                                        }
+                                                    
+                                                    ?>
+                                                    <form method="post" action="cart.php">
+                                                        <input class="form-control form-control-sm" type="hidden" name="lessQuantity" value="<?= $quantity - $modifQuantity ?>">
+                                                        <input type="hidden" name="productId" value="<?= $item['id'] ?>">
+                                                        <input type="hidden" name="price" value="<?= $item['price'] ?>">
+                                                        <button class="btn btn-link px-2" type="submit" name="modifQuantity" value="modifQuantity"> <i class="fas fa-minus"></i> </button>  
+                                                    </form>
+                                               
+                                                    <form action="cart.php" method="POST">
+                                                        <input class="form-control form-control-sm px-2" type="number" name="quantity" value="<?= $quantity ?>">
+                                                        <input type="hidden" name="productId" value="<?= $item['id'] ?>">
+                                                        <input type="hidden" name="price" value="<?= $item['price'] ?>">
+                                                    </form>
+                                                       
+                                                    <form action="cart.php" method="POST">
+                                                        <input class="form-control form-control-sm" type="hidden" name="moreQuantity" value="<?= $quantity + $modifQuantity ?>">
+                                                        <input type="hidden" name="productId" value="<?= $item['id'] ?>">
+                                                        <input type="hidden" name="price" value="<?= $item['price'] ?>">
+                                                        <button class="btn btn-link px-2" type="submit" name="modifQuantity" value="modifQuantity"> <i class="fas fa-plus"></i> </button>           
+                                                    </form>
+                                                        
                                                     </div>
                                                     <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
-                                                        <?php $item['total'] = calculPrice($item['price'], $item['discount'], $item['quantity']) ?>
-                                                        <h6 class="mb-0"><?php echo "Prix total : ", formatprice($item['total']), " € " ?></h6>                      
+                                                        <?php $itemtotal = calculPrice($item['price'], $item['discount'], $quantity) ?>
+                                                        <h6 class="mb-0"><?php echo "Prix total : ", formatprice($itemtotal), " € " ?></h6>
                                                     </div>
                                                     <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-6">
-                                                        <form method="post" action="cart.php?delete=<?php echo $item['id'] ?>">
-                                                            <button type="submit" class="btn btn-dark btn-block btn-lg " data-mdb-ripple-color="dark" name="reset" value="reset ">
+                                                        <form method="post" action="cart.php">
+                                                            <input type="hidden" name='productId' value="<?= $item['id']?>"/>
+                                                            <button type="submit" class="btn btn-dark btn-block btn-lg " data-mdb-ripple-color="dark" name="delete">
                                                                 <i class="fa-solid fa-trash" style="color: #ffffff;"></i></a>
-
                                                             </button>
 
                                                         </form>
@@ -135,7 +153,7 @@ $totalWeight = WeightTotal ($cart);
                                             </div>
 
                                             <div class="d-flex justify-content-between mb-4">
-                                                <h5 class="text-uppercase text-dark">Frais de port </h5> 
+                                                <h5 class="text-uppercase text-dark">Frais de port </h5>
                                                 <h5><?php echo formatprice($fraisPort =  calculFraisDP($totalWeight, $total, $_POST['transporteur'])) ?> €</h5>
                                             </div>
                                             <div class="mb-4 pb-2">
@@ -162,7 +180,7 @@ $totalWeight = WeightTotal ($cart);
             </div>
 
         </section>
-    </form>
+    
 <?php endif; ?>
 <script src="../assets/bootstrap-5.3.0-alpha3-dist/js/bootstrap.min.js"></script>
 <?php

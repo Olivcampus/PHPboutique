@@ -1,6 +1,5 @@
 <?php
 include '../pages/template/my-functions.php';
-include '../pages/template/catalog-with-keys.php';
 include 'template/requete.php';
 
 

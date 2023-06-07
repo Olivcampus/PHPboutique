@@ -17,4 +17,17 @@ if ($result){
 }
 return false;
 }
+
+function gettransporteur($bdd): array|false
+{
+$requete = $bdd->query('SELECT * FROM transporteur'); 
+$requete->execute();
+$result = $requete->fetchAll();
+$requete->closeCursor();
+if ($result){
+    return $result;
+}
+return false;
+}
 ?>
+

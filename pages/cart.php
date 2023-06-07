@@ -4,10 +4,11 @@ include_once 'template/my-functions.php';
 include_once 'template/cartfunctions.php';
 include_once 'template/alert.php';
 // var_dump($_POST['transporteur']); 
-// var_dump($arrProduct);
+
 // var_dump($_SESSION['cart']);
 // unset($_SESSION['cart']);
-
+$total = 0;
+$totalWeight = 0;
 if (!isset($_SESSION['cart'])) {
     $_SESSION['cart'] = [];
 }
@@ -41,10 +42,6 @@ if (isset($_POST['modifQuantity'])) {
 $modifQuantity = 1;
 $arrProduct = getCart($bdd);
 $quantities = array_column($_SESSION['cart'], 'quantity');
-if ($arrProduct) {
-    $total = getCartTotal($arrProduct, $quantities);
-}
-$totalWeight = WeightTotal($arrProduct, $quantities);
 $transporteur = gettransporteur($bdd);
 if (isset($_POST['transporteur'])){
 $fTransport = ($_POST['transporteur']);
@@ -119,9 +116,13 @@ $fTransport = ($_POST['transporteur']);
 
 
                                                 </div>
-                                                <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
+                                                        
+                                                <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">                                               
                                                     <?php $itemtotal = calculPrice($item['price'], $item['discount'], $quantity) ?>
                                                     <h6 class="mb-0"><?php echo "Prix total : ", formatprice($itemtotal), " € " ?></h6>
+                                                    <?php $total += $itemtotal ;
+                                                          $totalWeight += $item['weight'] * $quantity;
+                                                    ?>
                                                 </div>
                                                 <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-6">
                                                     <form method="post" action="cart.php">

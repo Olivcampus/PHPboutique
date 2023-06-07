@@ -49,34 +49,6 @@ function getCart($bdd)
     return false;
 }
 
-function getCartTotal($cart, $quantities)
-{   
-    if(!empty($_SESSION['cart'])) 
-    {
-        $total = 0;
- 
-        foreach ($cart as $item)
-        {
-            if ($item['discount'] == NULL) 
-            {    
-                foreach($quantities as $quantity)
-                {
-                    $total += $item['price'] * $quantity;
-                }     
-                
-                
-            } else {
-                foreach($quantities as $quantity)
-                { 
-                    $total += ($item['price'] - ($item['price'] * ($item['discount'] / 100))) * $quantity;
-                }
-            }
-        }
-        return $total;
-    }
-    return false;
-}
-
 function getCartItems()
 {
     if (!isset($_SESSION['cart'])) {
@@ -105,19 +77,4 @@ function removeFromCart($productKey)
             unset($_SESSION['cart'][$key]);
         }
     }
-}
-
-function WeightTotal($cart, $quantities)
-{
-    if(!empty($_SESSION['cart']))
-    {
-        $totalWeight = 0;
-        foreach ($cart as $item){
-        foreach ($quantities as $quantity) {
-            $totalWeight += $item['weight'] * $quantity;
-        }
-    }
-        return $totalWeight;
-    }
-    return false;
 }

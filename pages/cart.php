@@ -3,6 +3,7 @@ include_once 'template/header.php';
 include_once 'template/my-functions.php';
 include_once 'template/cartfunctions.php';
 include_once 'template/alert.php';
+include 'template/catalog-with-keys.php';
 // unset($_SESSION['cart']);
 
 if (!isset($_SESSION['cart'])) {
@@ -15,6 +16,7 @@ if (isset($_POST['addproduct'])) {
         updateCart($_POST['productId'], $_POST['quantity']);
     }
 }
+
 if (isset($_POST['delete']) && isset($_POST['productId'])) { removeFromCart($_POST['productId']); }
 
 if (isset($_POST['quantity'])){ $_POST['quantity'] == "0" ? removeFromCart($_POST['productId']) : addToCart($_POST['productId'], $_POST['quantity'], true); }
@@ -23,12 +25,13 @@ if (isset($_POST['modifQuantity'])) {
     if (isset($_POST['lessQuantity'])) { $_POST['lessQuantity'] == "0" ? removeFromCart($_POST['productId']) : addToCart($_POST['productId'], $_POST['lessQuantity'], true); $_POST['quantity']=$_POST['lessQuantity'];}
     if (isset($_POST['moreQuantity'])) { $_POST['moreQuantity'] == "0" ? removeFromCart($_POST['productId']) : addToCart($_POST['productId'], $_POST['moreQuantity'], true); $_POST['quantity']=$_POST['moreQuantity']; }
 }
-
+// var_dump($_SESSION['cart']);
 $modifQuantity = 1;
 $arrProduct = getCart($bdd);
-$total = getCartTotal($arrProduct,$_POST['quantity'],);
-$totalWeight = WeightTotal($arrProduct);
-
+$quantities = array_column($_SESSION['cart'], 'quantity');
+if($arrProduct) { $total = getCartTotal($arrProduct,$quantities); }
+$totalWeight = WeightTotal($arrProduct,$quantities);
+// var_dump($arrProduct);
 ?>
 <?php if (isset($_GET['delete'])) : ?>
     <?php echo getAlert('Le produit <strong>' . $_GET['delete'] . '</strong> a été supprimé de votre panier.', 'error'); ?>
@@ -61,34 +64,43 @@ $totalWeight = WeightTotal($arrProduct);
                                                     </div>
                                                     <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
                                                     <?php 
-                                                        if(!empty($_SESSION['cart'])) 
-                                                        {
-                                                            foreach($_SESSION['cart'] as $product) 
-                                                            {
-                                                                $quantity = $product['quantity'];
-                                                            }
-                                                        }
-                                                    
-                                                    ?>
-                                                    <form method="post" action="cart.php">
-                                                        <input class="form-control form-control-sm" type="hidden" name="lessQuantity" value="<?= $quantity - $modifQuantity ?>">
-                                                        <input type="hidden" name="productId" value="<?= $item['id'] ?>">
-                                                        <input type="hidden" name="price" value="<?= $item['price'] ?>">
-                                                        <button class="btn btn-link px-2" type="submit" name="modifQuantity" value="modifQuantity"> <i class="fas fa-minus"></i> </button>  
-                                                    </form>
-                                               
-                                                    <form action="cart.php" method="POST">
-                                                        <input class="form-control form-control-sm px-2" type="number" name="quantity" value="<?= $quantity ?>">
-                                                        <input type="hidden" name="productId" value="<?= $item['id'] ?>">
-                                                        <input type="hidden" name="price" value="<?= $item['price'] ?>">
-                                                    </form>
                                                        
-                                                    <form action="cart.php" method="POST">
-                                                        <input class="form-control form-control-sm" type="hidden" name="moreQuantity" value="<?= $quantity + $modifQuantity ?>">
-                                                        <input type="hidden" name="productId" value="<?= $item['id'] ?>">
-                                                        <input type="hidden" name="price" value="<?= $item['price'] ?>">
-                                                        <button class="btn btn-link px-2" type="submit" name="modifQuantity" value="modifQuantity"> <i class="fas fa-plus"></i> </button>           
-                                                    </form>
+                                                        if(!empty($_SESSION['cart'])) 
+                                                        {    
+                                                            foreach($_SESSION['cart'] as $productKey => $value) 
+                                                            {
+                                                                if($productKey)
+                                                                {
+                                                                    if($productKey === $item['id']){
+                                                                        $quantity = $_SESSION['cart'][$productKey]['quantity'];
+                                                                    }
+                                                                }
+                                                            }
+                                                            ?>
+                                                                <form method="post" action="cart.php">
+                                                                    <input class="form-control form-control-sm" type="hidden" name="lessQuantity" value="<?= $quantity - $modifQuantity ?>">
+                                                                    <input type="hidden" name="productId" value="<?= $item['id'] ?>">
+                                                                    <input type="hidden" name="price" value="<?= $item['price'] ?>">
+                                                                    <button class="btn btn-link px-2" type="submit" name="modifQuantity" value="modifQuantity"> <i class="fas fa-minus"></i> </button>  
+                                                                </form>
+                                                        
+                                                                <form action="cart.php" method="POST">
+                                                                    <input class="form-control form-control-sm px-2" type="number" name="quantity" value="<?= $quantity ?>">
+                                                                    <input type="hidden" name="productId" value="<?= $item['id'] ?>">
+                                                                    <input type="hidden" name="price" value="<?= $item['price'] ?>">
+                                                                </form>
+                                                                
+                                                                <form action="cart.php" method="POST">
+                                                                    <input class="form-control form-control-sm" type="hidden" name="moreQuantity" value="<?= $quantity + $modifQuantity ?>">
+                                                                    <input type="hidden" name="productId" value="<?= $item['id'] ?>">
+                                                                    <input type="hidden" name="price" value="<?= $item['price'] ?>">
+                                                                    <button class="btn btn-link px-2" type="submit" name="modifQuantity" value="modifQuantity"> <i class="fas fa-plus"></i> </button>           
+                                                                </form>          
+                                                            <?php     
+                                                        }
+
+                                                    ?>
+                                                    
                                                         
                                                     </div>
                                                     <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
@@ -135,8 +147,9 @@ $totalWeight = WeightTotal($arrProduct);
                                                 <h5 class="text-uppercase text-dark">Total panier </h5>
                                                 <h5><?php echo  formatprice($total), "€" ?></h5>
                                             </div>
+                                           
                                             <div class="mb-4 pb-2">
-                                                <select name="transporteur">
+                                            <select name="transporteur">
                                                     <?php if (isset($_POST['transporteur'])) { ?>
                                                         <option value="<?php $_POST['transporteur'] ?>" selected><?php echo formatprice($_POST['transporteur']), " €" ?></option>
                                                     <?php } else { ?>

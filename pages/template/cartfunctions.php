@@ -6,16 +6,13 @@ include 'template/requete.php';
 
 function addToCart($productKey, $quantity, bool $add)
 {
-    
-    $product = [
-        'productId' => $productKey,
-        'quantity' => $quantity
-    ];
-
     $exist = false;
     if(!isset($_SESSION['cart'][$productKey]))
     {
-        $_SESSION['cart'][$productKey] = $product;
+        $_SESSION['cart'][$productKey] =  [
+            'productId' => $productKey,
+            'quantity' => $quantity
+        ];
     } else {
         foreach($_SESSION['cart'] as $key => $value)
         {
@@ -27,7 +24,10 @@ function addToCart($productKey, $quantity, bool $add)
 
                 $exist = true;
             }
-            if(!$exist) $_SESSION['cart'][$productKey] = $product;
+            if(!$exist) $_SESSION['cart'][$productKey] =  [
+                'productId' => $productKey,
+                'quantity' => $quantity
+            ];
         }
     }
 }
@@ -50,19 +50,27 @@ function getCart($bdd)
     return false;
 }
 
-function getCartTotal($cart, $quantity)
+function getCartTotal($cart, $quantities)
 {   
-    if(!empty($_SESSION['cart'])) {
+    if(!empty($_SESSION['cart'])) 
+    {
         $total = 0;
-       
-
-        foreach ($cart as $item) {
-  
-            if ($item['discount'] == NULL) {         
-                $total += $item['price'] * $quantity;
+ 
+        foreach ($cart as $item)
+        {
+            if ($item['discount'] == NULL) 
+            {    
+                foreach($quantities as $quantity)
+                {
+                    $total += $item['price'] * $quantity;
+                }     
+                
                 
             } else {
-                $total += ($item['total'] - ($item['total'] * ($item['discount'] / 100))) *$quantity;
+                foreach($quantities as $quantity)
+                { 
+                    $total += ($item['price'] - ($item['price'] * ($item['discount'] / 100))) * $quantity;
+                }
             }
         }
         return $total;
@@ -100,16 +108,16 @@ function removeFromCart($productKey)
     }
 }
 
-function WeightTotal($cart)
+function WeightTotal($cart, $quantities)
 {
     if(!empty($_SESSION['cart']))
     {
         $totalWeight = 0;
-
-        foreach ($cart as $item) {
-            $totalWeight += $item['weight'];
+        foreach ($cart as $item){
+        foreach ($quantities as $quantity) {
+            $totalWeight += $item['weight'] * $quantity;
         }
-    
+    }
         return $totalWeight;
     }
     return false;

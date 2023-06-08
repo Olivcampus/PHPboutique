@@ -1,14 +1,3 @@
-<?php  
-if (session_status() !== PHP_SESSION_ACTIVE) {
-  session_start();
-}
-
-
-
-include_once "template/cartfunctions.php";  
-    $cartCount = getCartItems();
-
-?>
 <!DOCTYPE html>
 
 <html lang="fr">
@@ -21,7 +10,7 @@ include_once "template/cartfunctions.php";
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <link href="../assets/bootstrap-5.3.0-alpha3-dist/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+  <link href="../assets/bootstrap-5.3.0-alpha3-dist/css/bootstrap-reboot.min.css" rel="stylesheet" type="text/css">
 
   <link href="../assets/fontawesome/css/all.css" rel="stylesheet" type="text/css">
 
@@ -65,8 +54,8 @@ include_once "template/cartfunctions.php";
 
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="actifMenu nav-link text-white" href="../index.html" title="Accueil">Accueil</a>
-            <a href="cart.php" style="text-decoration: none " class=" text-white">Mon Panier (<?php echo $cartCount ?> <i class="fa-solid fa-basket-shopping "></i>)</a>
+            <a class="actifMenu nav-link text-white" href="index.html" title="Accueil">Accueil</a>
+            <a class="actifMenu nav-link text-white" href="/pages/multidimensional-catalog.php" title="Accueil">Catalogue</a>
           </li>
         </ul>
 
@@ -75,3 +64,31 @@ include_once "template/cartfunctions.php";
     </div>
 
   </nav>
+
+
+<header class="masthead">
+    <div class="container h-100">
+
+      <div class="row vh-100 align-items-center">
+
+        <div class="col-12 text-center">
+
+          <h1 class="text-white">FATAL.DEV</h1>
+
+          <p class="h2 text-white mb-5">Le 404 n'éxiste pas <br> Bienvenue</p>
+
+          <a href="/pages/multidimensional-catalog.php" title="scroll_section_suivante" class="mt-5">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="white"
+              class="bi bi-arrow-down-square mt-3" viewBox="0 0 16 16">
+              <path fill-rule="evenodd"
+                d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm8.5 2.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V4.5z" />
+            </svg>
+          </a>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </header>

@@ -1,97 +1,80 @@
-<?php 
-
-include "../pages/template/catalog-with-keys.php";
+<?php
 include '../pages/template/my-functions.php';
+include 'template/requete.php';
 
-function addToCart($productKey, $quantity) {    
-    $products = getProduct($productKey);    
-       // On initialise le tableau de session s'il n'existe pas encore
-    if (! isset($_SESSION['cart'])) {
-        $_SESSION['cart'] = [];
-    }
-    
-    // On ajoute (ou remplace) le produit au panier
-    if (isset($_SESSION['cart'][$productKey])) {
-        $_SESSION['cart'][$productKey] += $quantity;
-    } else {
-        $_SESSION['cart'][$productKey] = $quantity;
-    }
-}
 
-function getCart() {
-    $cartSession = $_SESSION['cart'] ?? [];
-
-    $cart = [];
-
-    foreach($cartSession as $productKey => $quantity) {
-        
-        $product = getProduct($productKey);
-
-        $cart[$productKey] = [
-            'id'        => $productKey,
-            'name'     => $product['name'],
-            'picture_url'     => $product['picture_url'],
-            'price'     => $product['price'],
-            'quantity'  => $quantity,
-            'discount' => $product['discount'],
-            'total'     =>$product['price'] * $quantity,
-            'weight'    => $product['weight'],
-            'qteWeight' => $product['weight'] * $quantity,
+function addToCart($productKey, $quantity, bool $add)
+{
+    $exist = false;
+    if(!isset($_SESSION['cart'][$productKey]))
+    {
+        $_SESSION['cart'][$productKey] =  [
+            'productId' => $productKey,
+            'quantity' => $quantity
         ];
+    } else {
+        foreach($_SESSION['cart'] as $key => $value)
+        {
+            if($productKey == $_SESSION['cart'][$key]['productId'])
+            {
+                if($add) { $_SESSION['cart'][$productKey]['quantity'] = $quantity; }
+
+                if(!$add) { $_SESSION['cart'][$productKey]['quantity'] += $quantity; }
+
+                $exist = true;
+            }
+            if(!$exist) $_SESSION['cart'][$productKey] =  [
+                'productId' => $productKey,
+                'quantity' => $quantity
+            ];
+        }
     }
-
-    return $cart;
-
 }
 
-function getCartTotal($cart) {
-    $total = 0;
-    if ( $cart['discount'] == NULL){
-    foreach($cart as $item) {
-        $total += $item['total'];
-    } } else {
-        foreach($cart as $item) {
-        $total += $item['total']- ($item['total']*($item['discount']/100));
-    }}
-
-
-    return $total;
+function getCart($bdd)
+{
+    if(!empty($_SESSION['cart'] ))
+    {
+        $arrProductId = array_column($_SESSION['cart'],'productId');
+        foreach($arrProductId as $id) 
+        {
+            $idProduct = (int)$id;
+            $requete = $bdd->query("SELECT * FROM product WHERE id = ".$idProduct.""); 
+            $requete->execute();
+            $cart[] = $requete->fetch(PDO::FETCH_ASSOC);
+            $requete->closeCursor();
+        }
+        return $cart; 
+    }    
+    return false;
 }
 
-function getCartItems() {
-    if ( ! isset($_SESSION['cart']) ) {
+function getCartItems()
+{
+    if (!isset($_SESSION['cart'])) {
         return 0;
     }
 
     return count($_SESSION['cart']);
 }
 
-function updateCart($productKeys, $quantities) {
-    for($i = 0; $i< count($productKeys); $i++) {
+function updateCart($productKeys, $quantities)
+{
+    for ($i = 0; $i < count($productKeys); $i++) {
 
         $productKey = $productKeys[$i];
         $quantity = $quantities[$i];
-        
+
         // On ajoute (ou remplace) le produit au panier
         $_SESSION['cart'][$productKey] = $quantity;
     }
 }
 
-function removeFromCart($productKey) {
-
-    if(! isset($_SESSION['cart'][$productKey])) {
-        return;
+function removeFromCart($productKey)
+{
+    foreach ($_SESSION['cart'] as $key => $value){
+        if ((int)$productKey === (int)$_SESSION['cart'][$key]['productId']) {
+            unset($_SESSION['cart'][$key]);
+        }
     }
-
-    unset($_SESSION['cart'][$productKey]);
-}
-
-function WeightTotal ($cart){
-    $totalWeight = 0;
-
-    foreach($cart as $item) {
-        $totalWeight += $item['qteWeight'] ;
-    }
-
-    return $totalWeight;
 }

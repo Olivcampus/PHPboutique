@@ -3,8 +3,9 @@ if (session_status() !== PHP_SESSION_ACTIVE) {
   session_start();
 }
 
-include_once "template/cartfunctions.php";
-    
+
+
+include_once "template/cartfunctions.php";  
     $cartCount = getCartItems();
 
 ?>

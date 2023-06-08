@@ -52,9 +52,14 @@ include_once 'template/requete.php';
                                                     <input type="hidden" name="productId" value="<?php echo $value['id'] ?>">
                                                     <input type="number" name="quantity" value="1" min="1" max="15">
                                                 </div>
-                                                <button class="btn btn-outline-primary btn-sm mt-2" name="addproduct">
+                                                <?php if ($value["quantity"] > 0) : ?>
+                                                    <button class="btn btn-outline-primary btn-sm mt-2" name="addproduct">
                                                     Ajouter au panier
-                                                </button>
+                                                </button>                                               
+                                                <?php else : ?>
+                                                    <button class="btn btn-outline-primary btn-sm mt-2" disabled>Pas de stock</button>
+                                                <?php endif ?>
+                                                
                                             </form>
                                         </div>
                                     </div>

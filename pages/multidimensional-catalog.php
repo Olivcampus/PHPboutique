@@ -50,7 +50,7 @@ include_once 'template/requete.php';
                                                 <div class="block quantity">
                                                     <input type="hidden" name="name" value="<?php echo $value['name'] ?>">
                                                     <input type="hidden" name="productId" value="<?php echo $value['id'] ?>">
-                                                    <input type="number" name="quantity" value="1" min="1" max="15">
+                                                    <input type="number" name="quantity" value="1" min="1" max="99">
                                                 </div>
                                                 <?php if ($value["quantity"] > 0) : ?>
                                                     <button class="btn btn-outline-primary btn-sm mt-2" name="addproduct">

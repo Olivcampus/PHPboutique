@@ -77,6 +77,7 @@ $fTransport = ($_POST['transporteur']);
                                         <div class="d-flex justify-content-between align-items-center mb-5">
                                             <h1 class="fw-bold mb-0 text-black">Panier</h1>
                                         </div>
+                                        
                                         <?php foreach ($arrProduct as $item) : ?>
                                             <input type="hidden" name="productId" value="<?php echo $item['id'] ?>">
                                             <div class="row mb-4 d-flex justify-content-between align-items-center">

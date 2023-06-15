@@ -3,14 +3,13 @@ include_once 'template/header.php';
 include_once 'template/my-functions.php';
 include_once 'template/alert.php';
 include_once 'template/requete.php';
+include_once 'template/classcatalogue.php';
 ?>
 
 <section style="background-color: #eee;">
     <?php
-    // $donnees =  getProduct($bdd);
-    $test = new item();
-    $test -> displayItem($bdd);
-    var_dump($test);
+    $catalogue = new Catalogue();
+    $donnees = $catalogue->getItems();
     if ($donnees) {
         foreach ($donnees as $key => $value) {
     ?>
@@ -53,16 +52,11 @@ include_once 'template/requete.php';
                                                 <div class="block quantity">
                                                     <input type="hidden" name="name" value="<?php echo $value['name'] ?>">
                                                     <input type="hidden" name="productId" value="<?php echo $value['id'] ?>">
-                                                    <input type="number" name="quantity" value="1" min="1" max="99">
+                                                    <input type="number" name="quantity" value="1" min="1" max="15">
                                                 </div>
-                                                <?php if ($value["quantity"] > 0) : ?>
-                                                    <button class="btn btn-outline-primary btn-sm mt-2" name="addproduct">
+                                                <button class="btn btn-outline-primary btn-sm mt-2" name="addproduct">
                                                     Ajouter au panier
-                                                </button>                                               
-                                                <?php else : ?>
-                                                    <button class="btn btn-outline-primary btn-sm mt-2" disabled>Pas de stock</button>
-                                                <?php endif ?>
-                                                
+                                                </button>
                                             </form>
                                         </div>
                                     </div>

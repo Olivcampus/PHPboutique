@@ -3,15 +3,23 @@ include_once 'template/header.php';
 include_once 'template/my-functions.php';
 include_once 'template/cartfunctions.php';
 include_once 'template/alert.php';
-
-// var_dump($_POST['transporteur']); 
+// var_dump($_POST['quantities']);
+// var_dump($_POST['total']); 
 // var_dump($_SESSION['cart']);
 // unset($_SESSION['cart']);
+
 $total = 0;
+
 $totalWeight = 0;
+
 if (!isset($_SESSION['cart'])) {
     $_SESSION['cart'] = [];
 }
+
+if (isset($_POST['addcommand'])){
+    addCommand($bdd,$_POST['userID'],$_POST['productId'],  $_POST['quantities'], $_POST['total']);
+  }
+
 if (isset($_POST['addproduct'])) {
     addToCart($_POST['productId'], $_POST['quantity'], false);
 
@@ -195,14 +203,19 @@ $fTransport = ($_POST['transporteur']);
                                         </div>
 
                                         <hr class="my-4">
-
+                                                <?php $totalCart=formatprice($fraisPort + $total);?>
                                         <div class="d-flex justify-content-between mb-5">
                                             <h5 class="text-uppercase text-dark">Prix total</h5>
-                                            <h5><?php echo formatprice($fraisPort + $total), " €" ?></h5>
+                                            <h5><?php echo $totalCart, " €" ?></h5>
                                         </div>
-
-                                        <button type="button" class="btn btn-dark btn-block btn-lg" data-mdb-ripple-color="dark">Commander</button>
-
+                                        <form action="cart.php" method="post">
+                                            <input type="hidden" value="<?= $totalCart?>" name="total"/>
+                                            <input type="hidden" value="1" name="userID"/>
+                                            <?php  foreach ($_SESSION['cart'] as $productKey => $value){?>
+                                            <input type="hidden" value="<?= $value['productId']?>" name="productId[]"/>     
+                                            <input type="hidden" value="<?=  $value['quantity']?>" name="quantities[]"/>  <?php }?>                                                     
+                                        <button type="submit" class="btn btn-dark btn-block btn-lg" data-mdb-ripple-color="dark" name="addcommand">Commander</button>
+                                        </form>
                                     </div>
                                 </div>
                             </div>

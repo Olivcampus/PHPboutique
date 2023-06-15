@@ -26,13 +26,13 @@ function addToCart($productKey, $quantity, bool $add)
     } else {
         foreach ($_SESSION['cart'] as $key => $value) {
             if ($productKey == $_SESSION['cart'][$key]['productId']) {
+               
                 if ($add) {
                     $_SESSION['cart'][$productKey]['quantity'] = $quantity;
-                }
-
-                if (!$add) {
+                } else {
                     $_SESSION['cart'][$productKey]['quantity'] += $quantity;
                 }
+
 
                 $exist = true;
             }
@@ -71,6 +71,7 @@ function getCartItems()
 
 function updateCart($productKeys, $quantities)
 {
+    
     for ($i = 0; $i < count($productKeys); $i++) {
 
         $productKey = $productKeys[$i];

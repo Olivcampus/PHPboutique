@@ -8,6 +8,7 @@ include_once 'template/requete.php';
 <section style="background-color: #eee;">
     <?php
     $donnees =  getProduct($bdd);
+    
     if ($donnees) {
         foreach ($donnees as $key => $value) {
     ?>

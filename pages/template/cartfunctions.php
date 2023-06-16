@@ -3,18 +3,18 @@ include '../pages/template/my-functions.php';
 include 'template/requete.php';
 
 
-function CheckStock($quantity, $arrProduct, $productId)
-{
-    foreach ($arrProduct as $key => $value) {
-        if ($arrProduct['id'] =  $productId) {
-            if ($quantity > $value['quantity']) {
-                $quantity = $value['quantity'];
-                echo "pas assez de stock";
-                return $quantity;
-            }
-        }
-    }
-}
+// function CheckStock($quantity, $arrProduct, $productId)
+// {
+//     foreach ($arrProduct as $key => $value) {
+//         if ($arrProduct['id'] =  $productId) {
+//             if ($quantity > $value['quantity']) {
+//                 $quantity = $value['quantity'];
+//                 echo "pas assez de stock";
+//                 return $quantity;
+//             }
+//         }
+//     }
+// }
 
 function addToCart($productKey, $quantity, bool $add)
 {

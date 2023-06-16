@@ -6,13 +6,11 @@ include_once 'template/alert.php';
 
 <section style="background-color: #eee;">
     <?php
-    
-    $catalogue=$test->getProducts();
-    var_dump($catalogue);
-    $donnees = $catalogue->getItems();
-    if (count($donnees) > 0) {
-        foreach ($donnees as $key => $value) {
-    ?>
+        $catalogue=$test->getProducts();
+        $donnees = $catalogue->getItems();
+        if (count($donnees) > 0) {
+            foreach ($donnees as $key => $value) {
+        ?>
             <div class="container py-5">
                 <div class="row justify-content-center mb-3">
                     <div class="col-md-12 col-xl-10">

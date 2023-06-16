@@ -46,7 +46,7 @@ include_once "template/cartfunctions.php";
 
     <div class="container d-flex flex-wrap">
 
-      <a class="navbar-brand d-flex align-items-center" href="multidimensional-catalog.php" title="accueil">
+      <a class="navbar-brand d-flex align-items-center" href="catalogue.php" title="accueil">
         <img src="../assets/images/logo_entreprise.png" alt="logo" class="logo_fatal_dev_header">
       </a>
 

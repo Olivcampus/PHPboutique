@@ -3,6 +3,7 @@ include_once 'template/header.php';
 include_once 'template/my-functions.php';
 include_once 'template/cartfunctions.php';
 include_once 'template/alert.php';
+
 // var_dump($_POST['quantities']);
 // var_dump($_POST['total']); 
 // var_dump($_SESSION['cart']);
@@ -147,7 +148,7 @@ $fTransport = ($_POST['transporteur']);
                                             <hr class="my-4">
                                         <?php endforeach; ?>
                                         <div class="pt-5">
-                                            <h6 class="mb-0"><a href="multidimensional-catalog.php" class="text-body"><i class="fas fa-long-arrow-alt-left me-2"></i>Back to shop</a></h6>
+                                            <h6 class="mb-0"><a href="catalogue.php" class="text-body"><i class="fas fa-long-arrow-alt-left me-2"></i>Back to shop</a></h6>
                                         </div>
                                     </div>
                                 </div>

@@ -1,9 +1,11 @@
-<?php  
+<?php
+require_once 'classBDD.php';
+
 if (session_status() !== PHP_SESSION_ACTIVE) {
   session_start();
 }
 
-
+$test = new Bdd();
 
 include_once "template/cartfunctions.php";  
     $cartCount = getCartItems();

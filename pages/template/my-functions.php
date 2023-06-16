@@ -12,9 +12,8 @@
     }
 
     function discountedPrice($product , $valeur){   
-
         if ($valeur != null){ 
-        $promo = $product ["price"] - ($product ["price"]* ($valeur/100) ) ;            
+        $promo = $product - ($product * ($valeur/100) ) ;            
         return $promo ;
         
     }else{

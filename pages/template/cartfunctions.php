@@ -2,6 +2,7 @@
 include '../pages/template/my-functions.php';
 include 'template/requete.php';
 
+
 function CheckStock($quantity, $arrProduct, $productId)
 {
     foreach ($arrProduct as $key => $value) {

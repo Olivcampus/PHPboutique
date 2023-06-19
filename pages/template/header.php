@@ -1,14 +1,21 @@
 <?php
 require_once 'classBDD.php';
+require_once 'classCart.php';
+
+$db = new Bdd();
+
 
 if (session_status() !== PHP_SESSION_ACTIVE) {
   session_start();
 }
 
-$test = new Bdd();
+if (!isset($_SESSION['cart'])) {
+  $_SESSION['cart'] = new Cart();
+}
 
-include_once "template/cartfunctions.php";  
-    $cartCount = getCartItems();
+
+// include_once "template/cartfunctions.php";  
+//     $cartCount = getCartItems();
 
 ?>
 <!DOCTYPE html>
@@ -68,7 +75,7 @@ include_once "template/cartfunctions.php";
         <ul class="navbar-nav">
           <li class="nav-item">
             <a class="actifMenu nav-link text-white" href="../index.html" title="Accueil">Accueil</a>
-            <a href="cart.php" style="text-decoration: none " class=" text-white">Mon Panier (<?php echo $cartCount ?> <i class="fa-solid fa-basket-shopping "></i>)</a>
+            <!-- <a href="cart.php" style="text-decoration: none " class=" text-white">Mon Panier (<?php echo $cartCount ?> <i class="fa-solid fa-basket-shopping "></i>)</a> -->
           </li>
         </ul>
 

@@ -6,7 +6,7 @@ include_once 'template/alert.php';
 
 <section style="background-color: #eee;">
     <?php
-        $catalogue=$test->getProducts();
+        $catalogue=$db->getProducts();
         $donnees = $catalogue->getItems();
         if (count($donnees) > 0) {
             foreach ($donnees as $key => $value) {

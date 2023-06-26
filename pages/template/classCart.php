@@ -16,7 +16,6 @@ class Cart
         } else {
             foreach ($this->cart as $key => $value) {
                 if ($id == $this->cart[$key]['productId']) {
-                    var_dump($this->cart);
                     if ($add) {
                         $this->cart[$id]['quantity'] = $quantity;
                     } else {

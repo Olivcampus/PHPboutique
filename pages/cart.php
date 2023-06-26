@@ -18,7 +18,6 @@ if (isset($_POST['addproduct'])) {
     }
 }
 
-
 if (isset($_POST['delete']) && isset($_POST['productId'])) {
     $_SESSION['cart']->removeFromCart($_POST['productId']);
 }
@@ -79,8 +78,6 @@ $fTransport = ($_POST['transporteur']);
                                                     
                                                     if (!empty($_SESSION['cart'])) {
                                                         foreach ($_SESSION['cart']->cart as $productKey => $value) {
-                                                            // var_dump($value);
-                                                            // var_dump($product->getId());
                                                             if ($productKey) {
                                                                 if ($productKey == $product->getId()) {
                                                                     $quantity = $_SESSION['cart']->cart[$productKey]['quantity'];

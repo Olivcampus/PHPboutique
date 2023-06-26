@@ -15,7 +15,7 @@ class Bdd extends PDO
   public function connect()
   {
     try {
-      $this->db = new PDO('mysql:host=localhost;dbname=olivboutique;charset=utf8', 'root', 'root', [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
+      $this->db = new PDO('mysql:host=localhost;dbname=olivboutique;charset=utf8', 'root', 'Luc@sNol@n1720', [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
     } catch (Exception $e) {
       die('Erreur : ' . $e->getMessage());
     }

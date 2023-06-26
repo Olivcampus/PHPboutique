@@ -1,56 +1,72 @@
-<?php 
+<?php
 include_once 'template/header.php';
 include_once 'template/my-functions.php';
+include_once 'template/cartfunctions.php';
 include_once 'template/alert.php';
 
-$total = $totalWeight = $quantity = 0;
-$productsInCart = $db->getCart($_SESSION['cart']->cart);
+// var_dump($_POST['quantities']);
+// var_dump($_POST['total']); 
+// var_dump($_SESSION['cart']);
 // unset($_SESSION['cart']);
+
+$total = 0;
+
+$totalWeight = 0;
+
+if (!isset($_SESSION['cart'])) {
+    $_SESSION['cart'] = [];
+}
+
 if (isset($_POST['addcommand'])){
-    $db->addCommand($_POST['userID'],$_POST['productId'],  $_POST['quantities'], $_POST['total']);
+    addCommand($bdd,$_POST['userID'],$_POST['productId'],  $_POST['quantities'], $_POST['total']);
   }
 
 if (isset($_POST['addproduct'])) {
-    $_SESSION['cart']->addToCart((int)$_POST['productId'], (int)$_POST['quantity'], false);
+    addToCart($_POST['productId'], $_POST['quantity'], false);
 
     if ($_POST['name'] === "update") {
-    $_SESSION['cart']->updateCart($_POST['productId'], $_POST['quantity']);
+        updateCart($_POST['productId'], $_POST['quantity']);
     }
 }
 
 if (isset($_POST['delete']) && isset($_POST['productId'])) {
-    $_SESSION['cart']->removeFromCart($_POST['productId']);
+    removeFromCart($_POST['productId']);
 }
 
 if (isset($_POST['quantity'])) {
-    $_POST['quantity'] == "0" ? removeFromCart($_POST['productId']) :  $_SESSION['cart']->addToCart($_POST['productId'], $_POST['quantity'], true);
+    $_POST['quantity'] == "0" ? removeFromCart($_POST['productId']) : addToCart($_POST['productId'], $_POST['quantity'], true);
 }
 
 if (isset($_POST['modifQuantity'])) {
     if (isset($_POST['lessQuantity'])) {
-        $_POST['lessQuantity'] == "0" ? removeFromCart($_POST['productId']) :  $_SESSION['cart']->addToCart($_POST['productId'], $_POST['lessQuantity'], true);
+        $_POST['lessQuantity'] == "0" ? removeFromCart($_POST['productId']) : addToCart($_POST['productId'], $_POST['lessQuantity'], true);
         $_POST['quantity'] = $_POST['lessQuantity'];
     }
     if (isset($_POST['moreQuantity'])) {
-        $_POST['moreQuantity'] == "0" ? removeFromCart($_POST['productId']) :  $_SESSION['cart']->addToCart($_POST['productId'], $_POST['moreQuantity'], true);
+        $_POST['moreQuantity'] == "0" ? removeFromCart($_POST['productId']) : addToCart($_POST['productId'], $_POST['moreQuantity'], true);
         $_POST['quantity'] = $_POST['moreQuantity'];
     }
 }
 
 $modifQuantity = 1;
-
-
-$transporteur = $db->getTransporteur();
+$arrProduct = getCart($bdd);
+$quantities = array_column($_SESSION['cart'], 'quantity');
+$transporteur = gettransporteur($bdd);
 if (isset($_POST['transporteur'])){
 $fTransport = ($_POST['transporteur']);
 }else{
     $fTransport=0; 
 }
+?>
+<?php if (isset($_GET['delete'])) : ?>
+    <?php echo getAlert('Le produit <strong>' . $_GET['delete'] . '</strong> a été supprimé de votre panier.', 'error'); ?>
+<?php endif; ?>
+<?php if (empty($_SESSION['cart'])) : ?>
+    <?php echo getAlert('Votre panier est vide.', 'success'); ?>
+<?php else : ?>
 
-    if (!empty($productsInCart))
-    {
-        ?>
-<section class="h-100 h-custom" style="background-color: #000;">
+
+    <section class="h-100 h-custom" style="background-color: #000;">
         <div class="container py-5 h-100">
             <div class="row d-flex justify-content-center align-items-center h-100">
                 <div class="col-12">
@@ -63,47 +79,44 @@ $fTransport = ($_POST['transporteur']);
                                             <h1 class="fw-bold mb-0 text-black">Panier</h1>
                                         </div>
                                         
-                                        <?php foreach ($productsInCart as $item) :
-                                            $product = new Item($item); ?>
-                                            <input type="hidden" name="productId" value="<?= $product->getId() ?>">
+                                        <?php foreach ($arrProduct as $item) : ?>
+                                            <input type="hidden" name="productId" value="<?php echo $item['id'] ?>">
                                             <div class="row mb-4 d-flex justify-content-between align-items-center">
                                                 <div class="col-md-2 col-lg-2 col-xl-2">
-                                                    <img src="<?= $product->getPictureUrl()?> " class="img-fluid rounded-3" alt="Cotton T-shirt">
+                                                    <img src="<?php echo $item['picture_url'] ?> " class="img-fluid rounded-3" alt="Cotton T-shirt">
                                                 </div>
                                                 <div class="col-md-3 col-lg-3 col-xl-3">
-                                                    <h6 class="text-muted"><?= $product->getName() ?></h6>
+                                                    <h6 class="text-muted"><?php echo $item['name'] ?></h6>
                                                 </div>
                                                 <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
                                                     <?php
-                                                    
+
                                                     if (!empty($_SESSION['cart'])) {
-                                                        foreach ($_SESSION['cart']->cart as $productKey => $value) {
+                                                        foreach ($_SESSION['cart'] as $productKey => $value) {
                                                             if ($productKey) {
-                                                                if ($productKey == $product->getId()) {
-                                                                    $quantity = $_SESSION['cart']->cart[$productKey]['quantity'];
-                                                                    
+                                                                if ($productKey === $item['id']) {
+                                                                    $quantity = $_SESSION['cart'][$productKey]['quantity'];
                                                                 }
                                                             }
                                                         }
-                                                        
                                                     ?>
                                                         <form method="post" action="cart.php">
                                                             <input class="form-control form-control-sm" type="hidden" name="lessQuantity" value="<?= $quantity - $modifQuantity ?>">
-                                                            <input type="hidden" name="productId" value="<?= $product->getId() ?>">
-                                                            <input type="hidden" name="price" value="<?= $product->getPrice() ?>">
+                                                            <input type="hidden" name="productId" value="<?= $item['id'] ?>">
+                                                            <input type="hidden" name="price" value="<?= $item['price'] ?>">
                                                             <button class="btn btn-link px-2" type="submit" name="modifQuantity" value="modifQuantity"> <i class="fas fa-minus"></i> </button>
                                                         </form>
 
                                                         <form action="cart.php" method="POST">
                                                             <input class="form-control form-control-sm px-2" type="number" name="quantity" value="<?= $quantity ?>">
-                                                            <input type="hidden" name="productId" value="<?= $product->getId() ?>">
-                                                            <input type="hidden" name="price" value="<?= $product->getPrice() ?>">
+                                                            <input type="hidden" name="productId" value="<?= $item['id'] ?>">
+                                                            <input type="hidden" name="price" value="<?= $item['price'] ?>">
                                                         </form>
 
                                                         <form action="cart.php" method="POST">
                                                             <input class="form-control form-control-sm" type="hidden" name="moreQuantity" value="<?= $quantity + $modifQuantity ?>">
-                                                            <input type="hidden" name="productId" value="<?= $product->getId() ?>">
-                                                            <input type="hidden" name="price" value="<?= $product->getPrice() ?>">
+                                                            <input type="hidden" name="productId" value="<?= $item['id'] ?>">
+                                                            <input type="hidden" name="price" value="<?= $item['price'] ?>">
                                                             <button class="btn btn-link px-2" type="submit" name="modifQuantity" value="modifQuantity"> <i class="fas fa-plus"></i> </button>
                                                         </form>
                                                     <?php
@@ -115,7 +128,7 @@ $fTransport = ($_POST['transporteur']);
                                                 </div>
                                                         
                                                 <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">                                               
-                                                    <?php $itemtotal = calculPrice($product->getPrice(), $product->getDiscount(), $quantity) ?>
+                                                    <?php $itemtotal = calculPrice($item['price'], $item['discount'], $quantity) ?>
                                                     <h6 class="mb-0"><?php echo "Prix total : ", formatprice($itemtotal), " € " ?></h6>
                                                     <?php $total += $itemtotal ;
                                                           $totalWeight += $item['weight'] * $quantity;
@@ -184,7 +197,7 @@ $fTransport = ($_POST['transporteur']);
                                             <h5 class="text-uppercase text-dark">Frais de port </h5>
                                             <?php if (isset ($fTransport)){ ?>     
                                                                      
-                                            <h5><?php echo formatprice($fraisPort = $_SESSION['cart']->calculFraisDP($totalWeight, $total, $fTransport)) ?> €</h5>
+                                            <h5><?php echo formatprice($fraisPort =  calculFraisDP($totalWeight, $total, $fTransport)) ?> €</h5>
                                             <?php } ?>
                                         </div>
                                         <div class="mb-4 pb-2">
@@ -200,9 +213,9 @@ $fTransport = ($_POST['transporteur']);
                                         <form action="cart.php" method="post">
                                             <input type="hidden" value="<?= $totalCart?>" name="total"/>
                                             <input type="hidden" value="1" name="userID"/>
-                                            <?php  foreach ($_SESSION['cart']->cart as $productKey){?>
-                                            <input type="hidden" value="<?=$productKey['productId']?>" name="productId[]"/>     
-                                            <input type="hidden" value="<?= $productKey['quantity']?>" name="quantities[]"/>  <?php }?>                                                     
+                                            <?php  foreach ($_SESSION['cart'] as $productKey => $value){?>
+                                            <input type="hidden" value="<?= $value['productId']?>" name="productId[]"/>     
+                                            <input type="hidden" value="<?=  $value['quantity']?>" name="quantities[]"/>  <?php }?>                                                     
                                         <button type="submit" class="btn btn-dark btn-block btn-lg" data-mdb-ripple-color="dark" name="addcommand">Commander</button>
                                         </form>
                                     </div>
@@ -216,15 +229,9 @@ $fTransport = ($_POST['transporteur']);
         </div>
 
     </section>
-    <?php  
-    }else{
-        echo '<div class="container vh-100 d-flex justify-content-center align-items-center">
-        <div class="alert alert-dark d-flex flex-column justify-content-center align-items-center" role="alert"> Votre panier est actuellement vide. <br>
-        <a href="catalogue.php" title="Retour à la liste des produits" class="btn btn-dark my-3"><i class="fa-solid fa-arrow-left"></i> Retour au catalogue</a>
-    </div></div>';
-    }
-    
-  
-?>
+
+<?php endif; ?>
 <script src="../assets/bootstrap-5.3.0-alpha3-dist/js/bootstrap.min.js"></script>
-<?php include 'template/footer.php'; ?>
+<?php
+include 'template/footer.php';
+?>

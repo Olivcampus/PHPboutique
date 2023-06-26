@@ -12,9 +12,8 @@
     }
 
     function discountedPrice($product , $valeur){   
-
         if ($valeur != null){ 
-        $promo = $product ["price"] - ($product ["price"]* ($valeur/100) ) ;            
+        $promo = $product - ($product * ($valeur/100) ) ;            
         return $promo ;
         
     }else{
@@ -42,17 +41,4 @@
             $tva = $product-  $productHT;
             return $tva;
 
-    }
-
-    function calculFraisDP ($poids, $prix, $transporteur){
-       
-        if ($poids < 500) {
-            $fraisPort= 500 + (int) $transporteur;        
-        }
-        else if ($poids < 2000){
-            $fraisPort = 0.1 * $prix + (int) $transporteur; 
-        }else {
-            $fraisPort = 0 + (int) $transporteur;
-        }
-        return $fraisPort;
     }
